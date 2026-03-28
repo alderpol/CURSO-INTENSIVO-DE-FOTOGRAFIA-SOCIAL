@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/cuestionario-fotografia.html" },
+    { "source": "/(.*)", "destination": "/cuestionario-fotografia.html" }
+  ]
+}
