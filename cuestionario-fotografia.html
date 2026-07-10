@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuestionario · Fotografía de Eventos</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c0e;
+    --surface: #141417;
+    --card: #1c1c21;
+    --border: #2a2a32;
+    --accent: #e8a838;
+    --accent-dim: rgba(232,168,56,0.12);
+    --text: #f0ede8;
+    --muted: #7a7882;
+    --correct: #4caf82;
+    --wrong: #e05a5a;
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  .header-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .header-subtitle {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .progress-wrap {
+    flex: 1;
+    max-width: 320px;
+  }
+
+  .progress-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 99px;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* MODULE TABS */
+  .module-nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+    display: flex;
+    padding: 0 16px;
+    gap: 2px;
+  }
+  .module-nav::-webkit-scrollbar { display: none; }
+
+  .mod-tab {
+    flex-shrink: 0;
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all .2s;
+    user-select: none;
+  }
+  .mod-tab:hover { color: var(--text); }
+  .mod-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .mod-tab.done {
+    color: var(--correct);
+  }
+
+  /* MAIN */
+  .main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  /* MODULE SECTION */
+  .module-section {
+    display: none;
+    animation: fadeUp .35s ease both;
+  }
+  .module-section.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .module-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .module-badge {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-dim);
+    padding: 5px 12px;
+    border-radius: 99px;
+  }
+
+  .module-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  /* CARDS */
+  .q-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 20px;
+    transition: border-color .2s;
+  }
+  .q-card:hover { border-color: #38383f; }
+
+  .q-type-tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 99px;
+    display: inline-block;
+    margin-bottom: 14px;
+  }
+  .tag-open   { background: rgba(100,120,255,.15); color: #8090ff; }
+  .tag-mc     { background: rgba(232,168,56,.15);  color: var(--accent); }
+  .tag-case   { background: rgba(100,200,160,.15); color: #6ac8a0; }
+  .tag-diag   { background: rgba(220,100,100,.15); color: #e08080; }
+
+  .q-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .q-text {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  /* OPEN & CASE TEXTAREA */
+  .q-textarea {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    padding: 14px 16px;
+    resize: vertical;
+    min-height: 110px;
+    transition: border-color .2s;
+    outline: none;
+  }
+  .q-textarea::placeholder { color: var(--muted); }
+  .q-textarea:focus { border-color: var(--accent); }
+
+  /* MULTIPLE CHOICE OPTIONS */
+  .mc-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mc-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all .18s;
+    user-select: none;
+  }
+  .mc-option:hover:not(.locked) { border-color: #48484f; background: #1e1e24; }
+
+  .mc-option.selected-correct {
+    border-color: var(--correct);
+    background: rgba(76,175,130,.08);
+  }
+  .mc-option.selected-wrong {
+    border-color: var(--wrong);
+    background: rgba(224,90,90,.08);
+  }
+  .mc-option.revealed-correct {
+    border-color: var(--correct);
+    background: rgba(76,175,130,.05);
+  }
+
+  .mc-letter {
+    min-width: 28px; height: 28px;
+    border-radius: 8px;
+    background: var(--border);
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .18s;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .selected-correct .mc-letter { background: var(--correct); color: #fff; }
+  .selected-wrong   .mc-letter { background: var(--wrong);   color: #fff; }
+  .revealed-correct .mc-letter { background: var(--correct); color: #fff; }
+
+  .mc-label { font-size: 14px; line-height: 1.5; }
+
+  .mc-feedback {
+    margin-top: 14px;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 14px;
+    border-radius: 10px;
+    display: none;
+  }
+  .mc-feedback.correct { background: rgba(76,175,130,.12); color: var(--correct); display: block; }
+  .mc-feedback.wrong   { background: rgba(224,90,90,.12);  color: var(--wrong);   display: block; }
+
+  /* NAVIGATION */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    gap: 12px;
+  }
+
+  .btn {
+    padding: 13px 28px;
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all .2s;
+  }
+
+  .btn-ghost {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .btn-ghost:hover { color: var(--text); border-color: #48484f; }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0c0c0e;
+  }
+  .btn-primary:hover { background: #f0b844; transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:disabled {
+    background: var(--border);
+    color: var(--muted);
+    cursor: default;
+    transform: none;
+  }
+
+  /* RESULTS SCREEN */
+  #results-screen {
+    display: none;
+    animation: fadeUp .4s ease both;
+  }
+
+  .results-hero {
+    text-align: center;
+    padding: 48px 24px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+  }
+
+  .results-emoji { font-size: 64px; margin-bottom: 16px; }
+
+  .results-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    margin-bottom: 8px;
+  }
+
+  .results-sub { color: var(--muted); font-size: 15px; }
+
+  .score-circle {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    border: 4px solid var(--accent);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 28px auto;
+  }
+
+  .score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .score-total {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .restart-btn {
+    margin-top: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 13px 32px;
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .restart-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* RESPONSIVE */
+  @media (max-width: 560px) {
+    .progress-wrap { display: none; }
+    .module-title { font-size: 18px; }
+    .q-text { font-size: 15px; }
+    .nav-row { flex-direction: column; }
+    .btn { width: 100%; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo-icon">📷</div>
+    <div>
+      <div class="header-title">Fotografía de Eventos</div>
+      <div class="header-subtitle">Cuestionario Intensivo</div>
+    </div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span id="progress-text">Módulo 1 de 8</span>
+      <span id="progress-pct">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE TABS -->
+<div class="module-nav" id="module-nav"></div>
+
+<!-- MAIN -->
+<div class="main" id="main-content">
+
+  <!-- MÓDULO 1 -->
+  <div class="module-section active" id="mod-0">
+    <div class="module-header">
+      <span class="module-badge">Módulo 1</span>
+      <h2 class="module-title">Exposición</h2>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-open">Pregunta abierta</span>
+      <div class="q-num">Pregunta 1</div>
+      <div class="q-text">Estás en una iglesia con luz baja. El sujeto está quieto pero el cura se mueve. ¿Qué priorizás: ISO, velocidad o apertura? Justificá.</div>
+      <textarea class="q-textarea" placeholder="Escribí tu respuesta aquí…"></textarea>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-mc">Multiple Choice</span>
+      <div class="q-num">Pregunta 2</div>
+      <div class="q-text">En una pista de baile con poca luz, ¿qué configuración es más segura?</div>
+      <div class="mc-options" data-correct="B">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">ISO bajo, velocidad baja, sin flash</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">ISO alto, velocidad alta, con flash</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">ISO bajo, velocidad alta, sin flash</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">ISO alto, velocidad baja, sin flash</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-case">Caso práctico</span>
+      <div class="q-num">Pregunta 3</div>
+      <div class="q-text">Tenés luces cálidas del salón + luces frías LED. ¿Exponés para: ambiente, piel, fondo o luces? Justificá.</div>
+      <textarea class="q-textarea" placeholder="Describí cómo resolverías este caso…"></textarea>
+    </div>
+  </div>
+
+  <!-- MÓDULO 2 -->
+  <div class="module-section" id="mod-1">
+    <div class="module-header">
+      <span class="module-badge">Módulo 2</span>
+      <h2 class="module-title">Foco y Nitidez</h2>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-open">Pregunta abierta</span>
+      <div class="q-num">Pregunta 1</div>
+      <div class="q-text">¿Por qué una foto puede estar bien expuesta pero ser inutilizable igual?</div>
+      <textarea class="q-textarea" placeholder="Escribí tu respuesta aquí…"></textarea>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-mc">Multiple Choice</span>
+      <div class="q-num">Pregunta 2</div>
+      <div class="q-text">Para una entrada de novios en movimiento, usás:</div>
+      <div class="mc-options" data-correct="B">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">AF-S</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">AF-C / seguimiento</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">Enfoque manual</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">Cualquier modo sirve igual</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-case">Caso práctico</span>
+      <div class="q-num">Pregunta 3</div>
+      <div class="q-text">Tenés muchas fotos levemente fuera de foco en momentos importantes. ¿Cuáles pueden ser las causas? (mínimo 3)</div>
+      <textarea class="q-textarea" placeholder="Listá al menos 3 posibles causas…"></textarea>
+    </div>
+  </div>
+
+  <!-- MÓDULO 3 -->
+  <div class="module-section" id="mod-2">
+    <div class="module-header">
+      <span class="module-badge">Módulo 3</span>
+      <h2 class="module-title">Flash</h2>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-open">Pregunta abierta</span>
+      <div class="q-num">Pregunta 1</div>
+      <div class="q-text">¿Cuál es el error más común al usar flash en eventos?</div>
+      <textarea class="q-textarea" placeholder="Escribí tu respuesta aquí…"></textarea>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-mc">Multiple Choice</span>
+      <div class="q-num">Pregunta 2</div>
+      <div class="q-text">El flash rebotado sirve principalmente para:</div>
+      <div class="mc-options" data-correct="B">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">Iluminar más fuerte</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">Suavizar la luz</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">Ahorrar batería</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">Aumentar el contraste</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-case">Caso práctico</span>
+      <div class="q-num">Pregunta 3</div>
+      <div class="q-text">Estás en un salón con techo muy alto (no podés rebotar). ¿Qué hacés?</div>
+      <textarea class="q-textarea" placeholder="Describí tu solución…"></textarea>
+    </div>
+  </div>
+
+  <!-- MÓDULO 4 -->
+  <div class="module-section" id="mod-3">
+    <div class="module-header">
+      <span class="module-badge">Módulo 4</span>
+      <h2 class="module-title">Composición Funcional</h2>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-open">Pregunta abierta</span>
+      <div class="q-num">Pregunta 1</div>
+      <div class="q-text">¿Qué significa que una foto sea "legible" en un evento?</div>
+      <textarea class="q-textarea" placeholder="Escribí tu respuesta aquí…"></textarea>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-mc">Multiple Choice</span>
+      <div class="q-num">Pregunta 2</div>
+      <div class="q-text">¿Qué es lo más importante en composición de eventos?</div>
+      <div class="mc-options" data-correct="C">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">Creatividad extrema</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">Que la foto sea artística</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">Que se entienda el momento</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">Usar reglas clásicas siempre</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-case">Caso práctico</span>
+      <div class="q-num">Pregunta 3</div>
+      <div class="q-text">Tenés una foto con fondo caótico (gente, luces, objetos). ¿Qué decisiones podés tomar en el momento para mejorarla?</div>
+      <textarea class="q-textarea" placeholder="Describí tus decisiones…"></textarea>
+    </div>
+  </div>
+
+  <!-- MÓDULO 5 -->
+  <div class="module-section" id="mod-4">
+    <div class="module-header">
+      <span class="module-badge">Módulo 5</span>
+      <h2 class="module-title">Narrativa</h2>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-open">Pregunta abierta</span>
+      <div class="q-num">Pregunta 1</div>
+      <div class="q-text">Nombrá al menos 5 momentos que no pueden faltar en un evento social.</div>
+      <textarea class="q-textarea" placeholder="Listá los momentos clave…"></textarea>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-mc">Multiple Choice</span>
+      <div class="q-num">Pregunta 2</div>
+      <div class="q-text">¿Qué es más grave?</div>
+      <div class="mc-options" data-correct="B">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">Perder una foto creativa</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">Perder un momento clave</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">Tener ruido en una foto</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">Subexponer una imagen</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-case">Caso práctico</span>
+      <div class="q-num">Pregunta 3</div>
+      <div class="q-text">¿Cómo anticipás un momento importante antes de que ocurra?</div>
+      <textarea class="q-textarea" placeholder="Contá tu estrategia…"></textarea>
+    </div>
+  </div>
+
+  <!-- MÓDULO 6 -->
+  <div class="module-section" id="mod-5">
+    <div class="module-header">
+      <span class="module-badge">Módulo 6</span>
+      <h2 class="module-title">Dirección y Manejo del Cliente</h2>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-open">Pregunta abierta</span>
+      <div class="q-num">Pregunta 1</div>
+      <div class="q-text">¿Cuándo es correcto intervenir y dirigir una escena?</div>
+      <textarea class="q-textarea" placeholder="Escribí tu respuesta aquí…"></textarea>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-mc">Multiple Choice</span>
+      <div class="q-num">Pregunta 2</div>
+      <div class="q-text">Al dirigir un grupo:</div>
+      <div class="mc-options" data-correct="B">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">Esperás que se acomoden solos</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">Das indicaciones claras y rápidas</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">Sacás muchas fotos sin hablar</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">Dejás que el cliente decida todo</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-case">Caso práctico</span>
+      <div class="q-num">Pregunta 3</div>
+      <div class="q-text">Grupo grande, desordenado, poco tiempo. ¿Cómo resolvés la situación en menos de 1 minuto?</div>
+      <textarea class="q-textarea" placeholder="Describí tu protocolo…"></textarea>
+    </div>
+  </div>
+
+  <!-- MÓDULO 7 -->
+  <div class="module-section" id="mod-6">
+    <div class="module-header">
+      <span class="module-badge">Módulo 7</span>
+      <h2 class="module-title">Criterio Profesional</h2>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-open">Pregunta abierta</span>
+      <div class="q-num">Pregunta 1</div>
+      <div class="q-text">¿Qué diferencia a un fotógrafo amateur de uno profesional en eventos?</div>
+      <textarea class="q-textarea" placeholder="Escribí tu respuesta aquí…"></textarea>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-mc">Multiple Choice</span>
+      <div class="q-num">Pregunta 2</div>
+      <div class="q-text">¿Qué foto se entrega?</div>
+      <div class="mc-options" data-correct="C">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">Todas</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">Solo las más creativas</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">Las técnicamente correctas y relevantes</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">Las que le gustan al fotógrafo</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-case">Caso práctico</span>
+      <div class="q-num">Pregunta 3</div>
+      <div class="q-text">Tenés 3 fotos del mismo momento: una desenfocada pero emocional, una perfecta técnicamente pero fría, y una correcta en ambos aspectos. ¿Cuál entregás y por qué?</div>
+      <textarea class="q-textarea" placeholder="Justificá tu elección…"></textarea>
+    </div>
+  </div>
+
+  <!-- MÓDULO 8 — DIAGNÓSTICO -->
+  <div class="module-section" id="mod-7">
+    <div class="module-header">
+      <span class="module-badge">Diagnóstico Final</span>
+      <h2 class="module-title">Evaluación Real</h2>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-diag">Diagnóstico</span>
+      <div class="q-num">Pregunta 1</div>
+      <div class="q-text">¿Cuál creés que es tu mayor debilidad hoy como fotógrafa de eventos?</div>
+      <textarea class="q-textarea" placeholder="Sé honesta con vos misma…"></textarea>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-diag">Diagnóstico</span>
+      <div class="q-num">Pregunta 2</div>
+      <div class="q-text">¿Qué error repetís con más frecuencia?</div>
+      <textarea class="q-textarea" placeholder="Identificá el patrón…"></textarea>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-diag">Diagnóstico</span>
+      <div class="q-num">Pregunta 3</div>
+      <div class="q-text">¿Qué harías diferente en tu próximo evento?</div>
+      <textarea class="q-textarea" placeholder="Tu plan de acción concreto…"></textarea>
+    </div>
+  </div>
+
+  <!-- NAV BUTTONS -->
+  <div class="nav-row" id="nav-row">
+    <button class="btn btn-ghost" id="btn-prev" onclick="navigate(-1)">← Anterior</button>
+    <button class="btn btn-primary" id="btn-next" onclick="navigate(1)">Siguiente →</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results-screen">
+    <div class="results-hero">
+      <div class="results-emoji">🎯</div>
+      <h2 class="results-title">¡Cuestionario completado!</h2>
+      <p class="results-sub">Revisá tus respuestas abiertas con tu instructor.</p>
+      <div class="score-circle">
+        <div class="score-num" id="final-score">—</div>
+        <div class="score-total">aciertos MC</div>
+      </div>
+      <p class="results-sub" id="score-detail"></p>
+      <br>
+      <button class="restart-btn" onclick="restart()">↺ Volver a empezar</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const TOTAL_MODULES = 8;
+  let current = 0;
+  let mcScores = { correct: 0, total: 7 };
+
+  const modules = [
+    "Exposición","Foco y Nitidez","Flash","Composición","Narrativa","Dirección","Criterio Prof.","Diagnóstico"
+  ];
+
+  // Build tabs
+  const nav = document.getElementById('module-nav');
+  modules.forEach((m, i) => {
+    const tab = document.createElement('div');
+    tab.className = 'mod-tab' + (i === 0 ? ' active' : '');
+    tab.textContent = m;
+    tab.id = `tab-${i}`;
+    tab.onclick = () => goTo(i);
+    nav.appendChild(tab);
+  });
+
+  function updateProgress() {
+    const pct = Math.round((current / (TOTAL_MODULES - 1)) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = `Módulo ${current + 1} de ${TOTAL_MODULES}`;
+    document.getElementById('progress-pct').textContent = pct + '%';
+  }
+
+  function goTo(idx) {
+    document.querySelectorAll('.module-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.mod-tab').forEach(t => t.classList.remove('active'));
+
+    const section = document.getElementById(`mod-${idx}`);
+    if (section) section.classList.add('active');
+    const tab = document.getElementById(`tab-${idx}`);
+    if (tab) tab.classList.add('active');
+
+    current = idx;
+    updateProgress();
+    updateNavButtons();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function navigate(dir) {
+    const next = current + dir;
+    if (next < 0) return;
+    if (next >= TOTAL_MODULES) {
+      showResults();
+      return;
+    }
+    goTo(next);
+  }
+
+  function updateNavButtons() {
+    const prev = document.getElementById('btn-prev');
+    const next = document.getElementById('btn-next');
+    prev.style.visibility = current === 0 ? 'hidden' : 'visible';
+    next.textContent = current === TOTAL_MODULES - 1 ? 'Finalizar ✓' : 'Siguiente →';
+  }
+
+  // MC Logic
+  document.querySelectorAll('.mc-options').forEach(group => {
+    const correct = group.dataset.correct;
+    const feedback = group.nextElementSibling;
+
+    group.querySelectorAll('.mc-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (group.classList.contains('answered')) return;
+        group.classList.add('answered');
+        group.querySelectorAll('.mc-option').forEach(o => o.classList.add('locked'));
+
+        const chosen = opt.dataset.letter;
+        if (chosen === correct) {
+          opt.classList.add('selected-correct');
+          feedback.textContent = '✓ ¡Correcto!';
+          feedback.className = 'mc-feedback correct';
+          mcScores.correct++;
+        } else {
+          opt.classList.add('selected-wrong');
+          feedback.textContent = `✗ Incorrecto. La respuesta correcta es la opción ${correct}.`;
+          feedback.className = 'mc-feedback wrong';
+          // Reveal correct
+          group.querySelector(`[data-letter="${correct}"]`).classList.add('revealed-correct');
+        }
+      });
+    });
+  });
+
+  function showResults() {
+    document.querySelectorAll('.module-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.mod-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('nav-row').style.display = 'none';
+    document.getElementById('results-screen').style.display = 'block';
+    document.getElementById('final-score').textContent = `${mcScores.correct}/${mcScores.total}`;
+    const pct = Math.round((mcScores.correct / mcScores.total) * 100);
+    document.getElementById('score-detail').textContent = `${pct}% de respuestas múltiples correctas`;
+    document.getElementById('progress-fill').style.width = '100%';
+    document.getElementById('progress-pct').textContent = '100%';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function restart() {
+    mcScores = { correct: 0, total: 7 };
+    // Reset MC
+    document.querySelectorAll('.mc-options').forEach(g => {
+      g.classList.remove('answered');
+      g.querySelectorAll('.mc-option').forEach(o => {
+        o.classList.remove('locked','selected-correct','selected-wrong','revealed-correct');
+      });
+      g.nextElementSibling.className = 'mc-feedback';
+      g.nextElementSibling.textContent = '';
+    });
+    // Reset textareas
+    document.querySelectorAll('.q-textarea').forEach(t => t.value = '');
+    // Reset tabs
+    document.querySelectorAll('.mod-tab').forEach(t => t.classList.remove('done'));
+
+    document.getElementById('results-screen').style.display = 'none';
+    document.getElementById('nav-row').style.display = 'flex';
+    goTo(0);
+  }
+
+  // Init
+  updateNavButtons();
+  updateProgress();
+</script>
+</body>
+</html>
