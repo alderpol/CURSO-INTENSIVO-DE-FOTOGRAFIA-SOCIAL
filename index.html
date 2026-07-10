@@ -232,6 +232,11 @@
   .flash-controls button:hover { border-color: var(--accent); color: var(--accent); }
   #flash-counter { font-size: 12.5px; color: var(--muted); min-width: 60px; text-align: center; }
 
+  /* ===== IFRAMES DE HERRAMIENTAS EXTERNAS ===== */
+  .embed-frame-wrap { position: relative; width: 100%; height: 720px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
+  .embed-frame-wrap iframe { width: 100%; height: 100%; border: 0; }
+  @media (max-width: 640px) { .embed-frame-wrap { height: 560px; } }
+
   @media (max-width: 560px) {
     .progress-wrap { display: none; }
     .module-title { font-size: 19px; }
@@ -396,12 +401,12 @@
 
     <div class="q-card">
       <span class="q-type-tag tag-ejer">Interactivo</span>
-      <div class="card-title">🎛 Simulador del triángulo de exposición</div>
-      <div class="theory"><p>Simulador real (foto + ruido + movimiento) de Dima Media, pensado para enseñar exactamente esto. Movés ISO, velocidad y diafragma y ves el resultado en vivo sobre la imagen.</p></div>
-      <div style="position:relative;width:100%;aspect-ratio:16/10;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--surface);">
-        <iframe src="https://dima.fi/exposure/" title="Exposure Triangle Simulator" style="width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe>
+      <div class="card-title">🎛 Simulador de cámara réflex (ISO / velocidad / diafragma)</div>
+      <div class="theory"><p>Simulador tipo Canon Camera Simulator: elegís modo (Manual, Prioridad a la velocidad, Prioridad a la apertura), ajustás los tres parámetros y "disparás" — la foto resultante simula el desenfoque de fondo, el movimiento y el ruido digital reales. Está en chino, pero los controles son los mismos íconos y sliders de siempre: 光圈 = diafragma, 快门速度 = velocidad, ISO = ISO.</p></div>
+      <div class="embed-frame-wrap">
+        <iframe src="https://cam.gm.ws/" title="Camera Simulator" loading="lazy" allowfullscreen></iframe>
       </div>
-      <p class="source-note">Simulador de <a href="https://dima.fi/exposure/" target="_blank" rel="noopener">dima.fi/exposure</a> (de uso libre para compartir e incrustar). Si no carga dentro de la página, abrilo directo en <a href="https://dima.fi/exposure/" target="_blank" rel="noopener">esta pestaña</a>.</p>
+      <p class="source-note">Si no carga en el iframe, abrilo directo en <a href="https://cam.gm.ws/" target="_blank" rel="noopener">cam.gm.ws</a>.</p>
     </div>
 
     <div class="q-card">
@@ -466,12 +471,22 @@
 
     <div class="q-card">
       <span class="q-type-tag tag-ejer">Interactivo</span>
-      <div class="card-title">📐 Simulador de campo de visión</div>
-      <div class="theory"><p>Comparador real de PhotoTools: elegí distancia focal y sensor para dos lentes y mirá exactamente cuánto entra en cuadro con cada uno, superpuesto sobre una escena real.</p></div>
-      <div style="position:relative;width:100%;aspect-ratio:16/11;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--surface);">
-        <iframe src="https://www.phototools.io/es/fov-simulator?a=24&sa=ff&b=85&sb=ff&img=2" title="Simulador de campo de visión" style="width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe>
+      <div class="card-title">📐 Ángulo de visión según la focal</div>
+      <div class="theory"><p>El mismo punto de cámara, tres lentes distintos: notá cómo cambia cuánto entra en cuadro.</p></div>
+      <svg viewBox="0 0 400 200" style="width:100%;height:auto;">
+        <polygon points="30,180 370,20 370,180" fill="rgba(100,120,255,.12)" stroke="#8090ff" stroke-width="1.5"/>
+        <polygon points="30,180 340,70 340,180" fill="rgba(232,168,56,.15)" stroke="#e8a838" stroke-width="1.5"/>
+        <polygon points="30,180 300,140 300,180" fill="rgba(100,200,160,.2)" stroke="#6ac8a0" stroke-width="1.5"/>
+        <circle cx="30" cy="180" r="5" fill="#f0ede8"/>
+        <text x="345" y="15" fill="#8090ff" font-size="11" font-family="Outfit">16-35mm</text>
+        <text x="315" y="65" fill="#e8a838" font-size="11" font-family="Outfit">50mm</text>
+        <text x="230" y="135" fill="#6ac8a0" font-size="11" font-family="Outfit">200mm</text>
+        <text x="6" y="195" fill="#7a7882" font-size="10" font-family="Outfit">cámara</text>
+      </svg>
+      <div class="cta-row" style="justify-content:flex-start;margin-top:14px;">
+        <a class="btn btn-primary" href="https://www.phototools.io/es/fov-simulator?a=24&sa=ff&b=85&sb=ff&img=2" target="_blank" rel="noopener">Abrir simulador de campo de visión ↗</a>
       </div>
-      <p class="source-note">Empieza comparando 24mm vs. 85mm en formato completo (una combinación típica de evento). Podés cambiar los valores dentro del simulador o abrirlo directo en <a href="https://www.phototools.io/es/fov-simulator" target="_blank" rel="noopener">phototools.io</a> si no carga en el iframe.</p>
+      <p class="source-note">Se abre en una pestaña nueva (phototools.io no permite incrustarse en otras páginas). Ahí podés comparar 24mm vs. 85mm en formato completo, o cambiar los valores vos misma/o.</p>
     </div>
 
     <div class="q-card">
