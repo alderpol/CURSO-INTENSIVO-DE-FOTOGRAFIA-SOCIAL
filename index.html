@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de Estudios · Fotografía de Eventos · La Belle Joie</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c0e;
+    --surface: #141417;
+    --card: #1c1c21;
+    --border: #2a2a32;
+    --accent: #e8a838;
+    --accent-dim: rgba(232,168,56,0.12);
+    --text: #f0ede8;
+    --muted: #7a7882;
+    --correct: #4caf82;
+    --wrong: #e05a5a;
+    --blue: #8090ff;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; min-height: 100vh; }
+  a { color: var(--accent); }
+
+  .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 18px 24px; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .header-left { display: flex; align-items: center; gap: 12px; }
+  .logo-icon { width: 36px; height: 36px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .header-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; line-height: 1.2; }
+  .header-subtitle { font-size: 11px; color: var(--muted); font-weight: 300; letter-spacing: 0.5px; text-transform: uppercase; }
+  .progress-wrap { flex: 1; max-width: 320px; min-width: 160px; }
+  .progress-label { font-size: 11px; color: var(--muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .progress-bar { height: 4px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width .4s ease; }
+  .header-links { display: flex; gap: 8px; }
+  .header-link { font-size: 11px; font-weight: 600; text-decoration: none; color: var(--muted); border: 1px solid var(--border); padding: 8px 14px; border-radius: 99px; transition: all .2s; white-space: nowrap; }
+  .header-link:hover { color: var(--accent); border-color: var(--accent); }
+
+  .module-nav { background: var(--surface); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; display: flex; padding: 0 16px; gap: 2px; }
+  .module-nav::-webkit-scrollbar { display: none; }
+  .mod-tab { flex-shrink: 0; padding: 12px 16px; font-size: 12px; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: all .2s; user-select: none; }
+  .mod-tab:hover { color: var(--text); }
+  .mod-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .mod-tab.done::before { content: "✓ "; color: var(--correct); }
+
+  .main { max-width: 820px; margin: 0 auto; padding: 32px 20px 80px; }
+  .module-section { display: none; animation: fadeUp .35s ease both; }
+  .module-section.active { display: block; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  .module-header { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+  .module-badge { font-size: 11px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--accent); background: var(--accent-dim); padding: 5px 12px; border-radius: 99px; }
+  .module-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; }
+  .module-goal { color: var(--muted); font-size: 14px; margin-bottom: 26px; line-height: 1.6; }
+
+  .q-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; transition: border-color .2s; }
+  .q-card:hover { border-color: #38383f; }
+  .q-type-tag { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 3px 10px; border-radius: 99px; display: inline-block; margin-bottom: 14px; }
+  .tag-teoria  { background: rgba(100,120,255,.15); color: var(--blue); }
+  .tag-tips    { background: rgba(232,168,56,.15);  color: var(--accent); }
+  .tag-ejer    { background: rgba(100,200,160,.15); color: #6ac8a0; }
+  .tag-check   { background: rgba(220,100,100,.15); color: #e08080; }
+
+  .card-title { font-family: 'Playfair Display', serif; font-size: 16px; margin-bottom: 14px; }
+  .theory p { font-size: 14.5px; line-height: 1.75; margin-bottom: 12px; color: var(--text); }
+  .theory strong { color: var(--accent); font-weight: 600; }
+  .theory ul { margin: 0 0 12px 0; padding-left: 20px; }
+  .theory li { font-size: 14.5px; line-height: 1.7; margin-bottom: 6px; }
+  .theory table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13.5px; }
+  .theory th, .theory td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; }
+  .theory th { background: var(--surface); color: var(--accent); font-weight: 600; }
+
+  .tip-list { list-style: none; padding: 0; }
+  .tip-list li { display: flex; gap: 10px; font-size: 14px; line-height: 1.6; margin-bottom: 10px; padding-left: 0; }
+  .tip-list li::before { content: "⚠"; color: var(--accent); flex-shrink: 0; }
+
+  .checklist { list-style: none; padding: 0; }
+  .checklist li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.6; margin-bottom: 10px; cursor: pointer; }
+  .checklist input[type="checkbox"] { margin-top: 3px; accent-color: var(--accent); width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; }
+  .checklist li.checked span { text-decoration: line-through; color: var(--muted); }
+
+  .mc-options { display: flex; flex-direction: column; gap: 10px; }
+  .mc-option { display: flex; align-items: flex-start; gap: 14px; background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 16px; cursor: pointer; transition: all .18s; user-select: none; }
+  .mc-option:hover:not(.locked) { border-color: #48484f; background: #1e1e24; }
+  .mc-option.selected-correct { border-color: var(--correct); background: rgba(76,175,130,.08); }
+  .mc-option.selected-wrong { border-color: var(--wrong); background: rgba(224,90,90,.08); }
+  .mc-option.revealed-correct { border-color: var(--correct); background: rgba(76,175,130,.05); }
+  .mc-letter { min-width: 28px; height: 28px; border-radius: 8px; background: var(--border); color: var(--muted); font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all .18s; flex-shrink: 0; margin-top: 1px; }
+  .selected-correct .mc-letter { background: var(--correct); color: #fff; }
+  .selected-wrong .mc-letter { background: var(--wrong); color: #fff; }
+  .revealed-correct .mc-letter { background: var(--correct); color: #fff; }
+  .mc-label { font-size: 14px; line-height: 1.5; }
+  .mc-feedback { margin-top: 14px; font-size: 13px; font-weight: 500; padding: 10px 14px; border-radius: 10px; display: none; }
+  .mc-feedback.correct { background: rgba(76,175,130,.12); color: var(--correct); display: block; }
+  .mc-feedback.wrong { background: rgba(224,90,90,.12); color: var(--wrong); display: block; }
+
+  .schedule-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .schedule-table th, .schedule-table td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; vertical-align: top; }
+  .schedule-table th { background: var(--surface); color: var(--accent); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
+  .schedule-table td.week-num { font-family: 'Playfair Display', serif; color: var(--accent); font-weight: 600; white-space: nowrap; }
+  .schedule-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .hero { text-align: center; padding: 40px 24px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 24px; }
+  .hero-emoji { font-size: 48px; margin-bottom: 14px; }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: 26px; margin-bottom: 10px; }
+  .hero-sub { color: var(--muted); font-size: 14.5px; line-height: 1.7; max-width: 560px; margin: 0 auto; }
+
+  .method-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 14px; margin-top: 16px; }
+  .method-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
+  .method-item .m-emoji { font-size: 24px; margin-bottom: 8px; }
+  .method-item .m-title { font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+  .method-item .m-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  .cta-row { display: flex; gap: 12px; justify-content: center; margin-top: 22px; flex-wrap: wrap; }
+  .btn { padding: 13px 28px; border-radius: 12px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all .2s; text-decoration: none; display: inline-block; }
+  .btn-ghost { background: var(--card); border: 1px solid var(--border); color: var(--muted); }
+  .btn-ghost:hover { color: var(--text); border-color: #48484f; }
+  .btn-primary { background: var(--accent); color: #0c0c0e; }
+  .btn-primary:hover { background: #f0b844; transform: translateY(-1px); }
+
+  .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; gap: 12px; }
+  .btn-nav { padding: 13px 28px; border-radius: 12px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all .2s; }
+
+  .mark-done-row { display: flex; justify-content: center; margin-top: 8px; }
+  .mark-done { background: var(--card); border: 1px solid var(--accent); color: var(--accent); padding: 11px 24px; border-radius: 12px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .2s; }
+  .mark-done.is-done { background: var(--accent); color: #0c0c0e; }
+
+  .source-note { font-size: 11.5px; color: var(--muted); font-style: italic; margin-top: 10px; }
+
+  @media (max-width: 560px) {
+    .progress-wrap { display: none; }
+    .module-title { font-size: 19px; }
+    .schedule-table { font-size: 12px; }
+    .nav-row { flex-direction: column; }
+    .btn-nav { width: 100%; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo-icon">📷</div>
+    <div>
+      <div class="header-title">La Belle Joie</div>
+      <div class="header-subtitle">Plan de Estudios · Eventos</div>
+    </div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-label"><span id="progress-text">0 / 12 módulos completados</span><span id="progress-pct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+  <div class="header-links">
+    <a class="header-link" href="cuestionario-fotografia.html">Evaluación →</a>
+  </div>
+</div>
+
+<div class="module-nav" id="module-nav"></div>
+
+<div class="main" id="main-content">
+
+  <!-- INICIO -->
+  <div class="module-section active" id="mod-0">
+    <div class="hero">
+      <div class="hero-emoji">📸</div>
+      <h1 class="hero-title">Plan de Estudios · Fotografía de Eventos</h1>
+      <p class="hero-sub">12 semanas para formar un equipo con criterio profesional real en bodas, 15 años y celebraciones sociales. Un módulo por semana: teoría aplicada, ejercicio práctico y autoevaluación.</p>
+      <div class="method-grid">
+        <div class="method-item"><div class="m-emoji">📖</div><div class="m-title">Teoría</div><div class="m-desc">Leer el módulo de la semana</div></div>
+        <div class="method-item"><div class="m-emoji">🛠</div><div class="m-title">Práctica</div><div class="m-desc">Hacer el ejercicio real, con cámara en mano</div></div>
+        <div class="method-item"><div class="m-emoji">👥</div><div class="m-title">Feedback</div><div class="m-desc">Revisar resultados en equipo</div></div>
+        <div class="method-item"><div class="m-emoji">✅</div><div class="m-title">Evaluación</div><div class="m-desc">Chequeo rápido + cuestionario final</div></div>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#" onclick="goTo(1);return false;">Empezar Semana 1 →</a>
+        <a class="btn btn-ghost" href="cuestionario-fotografia.html">Ver Evaluación Final</a>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="card-title">🗓 Cronograma</div>
+      <table class="schedule-table">
+        <tr><th>Semana</th><th>Módulo</th><th>Objetivo</th><th>Entregable / práctica</th></tr>
+        <tr><td class="week-num">1</td><td>Mentalidad del Fotógrafo Social</td><td>Entender el rol más allá de apretar el obturador</td><td>Registro de 5 micro-momentos anticipados</td></tr>
+        <tr><td class="week-num">2</td><td>Cámara y Triángulo de Exposición</td><td>Dominar ISO, velocidad y diafragma</td><td>Tabla propia de configuraciones por situación</td></tr>
+        <tr><td class="week-num">3</td><td>Ópticas Fotográficas</td><td>Elegir el lente correcto para cada momento</td><td>Misma escena en 3 distancias focales</td></tr>
+        <tr><td class="week-num">4</td><td>La Luz</td><td>Leer luz natural/artificial, dura/suave</td><td>Mismo sujeto en 4 condiciones de luz</td></tr>
+        <tr><td class="week-num">5</td><td>Flash e Iluminación Artificial</td><td>Usar flash con criterio, no por default</td><td>Comparar flash directo vs rebotado vs difusor</td></tr>
+        <tr><td class="week-num">6</td><td>Foco y Nitidez</td><td>Elegir el modo de foco según la escena</td><td>Serie de fotos en movimiento sin desenfoque</td></tr>
+        <tr><td class="week-num">7</td><td>Composición Funcional</td><td>Componer para que la imagen se entienda ya</td><td>Recomponer/recortar 10 fotos propias</td></tr>
+        <tr><td class="week-num">8</td><td>Dirección de Modelos y Poses</td><td>Dirigir parejas, quinceañeras, familias y grupos</td><td>Mini sesión dirigida de 15 minutos</td></tr>
+        <tr><td class="week-num">9</td><td>Narrativa y Momentos Clave</td><td>Anticipar y no perderse lo importante</td><td>Shot list propia de 20+ momentos</td></tr>
+        <tr><td class="week-num">10</td><td>Trato con Clientes y Equipo</td><td>Entrevista previa, confianza y manejo de crisis</td><td>Cuestionario de entrevista inicial propio</td></tr>
+        <tr><td class="week-num">11</td><td>Criterio Profesional, Edición y Entrega</td><td>Seleccionar, editar y entregar con coherencia</td><td>Selección editada de 30 fotos</td></tr>
+        <tr><td class="week-num">12</td><td>Logística, Kit y Diagnóstico Final</td><td>Preparar el equipo y autoevaluarse</td><td>Checklist de bolso + cuestionario final</td></tr>
+      </table>
+    </div>
+
+    <div class="q-card">
+      <div class="card-title">📋 Cómo usar este plan</div>
+      <div class="theory">
+        <ul>
+          <li>Un módulo por semana. Cada módulo tiene: teoría aplicada, errores comunes / tips, un ejercicio práctico obligatorio y un chequeo rápido de 1-2 preguntas.</li>
+          <li>El ejercicio práctico se hace con cámara en mano — no alcanza con leer. Fotografía real o simulacro de evento.</li>
+          <li>Al terminar los 12 módulos, se completa el <a href="cuestionario-fotografia.html">cuestionario de evaluación final</a> (8 ejes, incluye diagnóstico personal).</li>
+          <li>El progreso se guarda automáticamente en este navegador con el botón "Marcar módulo como completado" al final de cada semana.</li>
+        </ul>
+        <p class="source-note">Este plan integra el manual interno "Fotografía Social · Bodas &amp; 15 Años" y contenido curado de guías profesionales de sesiones documentales, adaptado a bodas y 15 años.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MÓDULO 1 -->
+  <div class="module-section" id="mod-1" data-title="Mentalidad del Fotógrafo Social">
+    <div class="module-header"><span class="module-badge">Semana 1</span><h2 class="module-title">Mentalidad del Fotógrafo Social</h2></div>
+    <p class="module-goal">Objetivo: entender que el fotógrafo de eventos no solo documenta — organiza, calma, guía y transmite seguridad. La gente recuerda cómo la hiciste sentir, no solo las fotos.</p>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-teoria">Teoría</span>
+      <div class="card-title">El rol real del fotógrafo social</div>
+      <div class="theory">
+        <p>Un fotógrafo social trabaja con emociones, tiempos limitados, personas nerviosas, luces difíciles y momentos que jamás se repiten. Por eso aprender fotografía social no es solo aprender cámara: es aprender a <strong>observar, anticiparse, dirigir, resolver y adaptarse</strong>.</p>
+        <p><strong>Fotógrafo promedio:</strong> reacciona tarde, improvisa, se pone nervioso, depende de la suerte, dispara sin intención.</p>
+        <p><strong>Fotógrafo profesional:</strong> anticipa, observa, entiende la luz, entiende las emociones, sabe qué momento viene después.</p>
+        <p><strong>Anticipación:</strong> es la habilidad más importante en sociales. Detectar micro-momentos antes de que sucedan: la mamá que se emociona, el papá que mira a su hija, los novios a punto de abrazarse, una amiga a punto de llorar.</p>
+        <p><strong>Ser invisible:</strong> uno de los mayores secretos del oficio. El fotógrafo debe estar presente sin invadir. Las mejores fotos suceden cuando la gente se olvida de la cámara.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-tips">Errores comunes</span>
+      <div class="card-title">Lo que frena a un fotógrafo junior</div>
+      <ul class="tip-list">
+        <li>Quedarse fijo en un solo lugar durante todo el evento en vez de moverse y leer el ritmo.</li>
+        <li>Depender de la cámara para "salvar" la falta de atención al momento.</li>
+        <li>No leer cuándo acercarse (momento íntimo) y cuándo alejarse (dar espacio).</li>
+        <li>Transmitir nerviosismo — la energía del fotógrafo se contagia a los invitados.</li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-ejer">Ejercicio práctico</span>
+      <div class="card-title">Esta semana</div>
+      <ul class="checklist" data-storage-prefix="w1">
+        <li><input type="checkbox"><span>Ir a un evento real (o mirar 2 videos de bodas/15) y anotar 5 micro-momentos que hubieras anticipado antes de que pasaran.</span></li>
+        <li><input type="checkbox"><span>Practicar "ser invisible" en una reunión familiar: sacar 15 fotos candid sin pedir que nadie pose.</span></li>
+        <li><input type="checkbox"><span>Escribir en una frase la diferencia entre "sacar fotos" y "capturar momentos".</span></li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-check">Chequeo rápido</span>
+      <div class="q-text" style="margin-bottom:14px;">¿Qué habilidad distingue más a un fotógrafo social profesional de uno amateur?</div>
+      <div class="mc-options" data-correct="B">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">Tener el equipo más caro</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">Anticipar momentos antes de que sucedan</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">Sacar la mayor cantidad de fotos posible</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">Usar siempre modo manual</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="mark-done-row"><button class="mark-done" data-mod="1">Marcar módulo 1 como completado</button></div>
+    <div class="nav-row"><button class="btn btn-ghost btn-nav" onclick="navigate(-1)">← Anterior</button><button class="btn btn-primary btn-nav" onclick="navigate(1)">Siguiente →</button></div>
+  </div>
+
+  <!-- MÓDULO 2 -->
+  <div class="module-section" id="mod-2" data-title="Cámara y Triángulo de Exposición">
+    <div class="module-header"><span class="module-badge">Semana 2</span><h2 class="module-title">Cámara y Triángulo de Exposición</h2></div>
+    <p class="module-goal">Objetivo: dominar ISO, velocidad de obturación y diafragma como un solo sistema, no como tres conceptos sueltos.</p>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-teoria">Teoría</span>
+      <div class="card-title">Las tres variables</div>
+      <div class="theory">
+        <p><strong>ISO</strong> — controla la sensibilidad a la luz. ISO bajo (100): imagen limpia, ideal para exteriores y lugares iluminados. ISO alto (6400+): más sensibilidad pero más ruido — ideal para salones oscuros, iglesias, pistas. Una foto con ruido es mejor que una foto movida, y una foto emocional vale más que una técnicamente perfecta.</p>
+        <p><strong>Velocidad de obturación</strong> — controla cuánto tiempo entra luz, y por lo tanto el congelamiento o movimiento. A mayor fracción (1/500) menos luz y más congelada la imagen (desde 1/125 ya se considera congelada). A menor fracción (1/15) más luz pero más movimiento (por debajo de 1/60 conviene trípode).</p>
+        <table>
+          <tr><th>Situación</th><th>Velocidad recomendada</th></tr>
+          <tr><td>Retratos en exterior</td><td>1/250 o más</td></tr>
+          <tr><td>Retratos en salón</td><td>1/160</td></tr>
+          <tr><td>Entrada al salón</td><td>1/160</td></tr>
+          <tr><td>Baile sin flash</td><td>1/320</td></tr>
+          <tr><td>Pista con flash</td><td>1/160</td></tr>
+          <tr><td>Fotos grupales</td><td>1/160</td></tr>
+        </table>
+        <p><strong>Diafragma</strong> — controla cuánta luz entra y la profundidad de campo. Apertura grande (f/1.4-f/2.8): mucho desenfoque, look cinematográfico, ideal para retratos y detalles. Apertura cerrada (f/5.6-f/11): más foco general pero menos luz, ideal para grupos e iglesias. Mega tip: aprovechar siempre la mayor apertura disponible, salvo en entradas, fotos familiares o coreografías donde se necesita más profundidad de campo.</p>
+        <p>Las tres variables están conectadas: si subís ISO, podés usar menos luz en obturación o diafragma; si abrís diafragma, podés bajar ISO o subir velocidad. El <strong>exposímetro</strong> de la cámara guía la decisión: 0 es exposición correcta, negativo es subexpuesta, positivo es sobreexpuesta — pero "0" no siempre es la elección creativa correcta.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-tips">Errores comunes</span>
+      <ul class="tip-list">
+        <li>Tenerle miedo al ISO alto y preferir una foto movida antes que una con ruido.</li>
+        <li>Usar la misma velocidad para baile con y sin flash (son configuraciones distintas).</li>
+        <li>Cerrar el diafragma sin necesidad y perder luz en escenas de poca luminosidad.</li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-ejer">Ejercicio práctico</span>
+      <div class="card-title">Esta semana</div>
+      <ul class="checklist" data-storage-prefix="w2">
+        <li><input type="checkbox"><span>Armar tu propia tabla de configuraciones (ISO/velocidad/diafragma) para: entrada de salón, baile con flash, baile sin flash, retrato exterior, foto grupal.</span></li>
+        <li><input type="checkbox"><span>Tomar al menos una foto real por cada situación de la tabla y revisar el exposímetro antes de disparar.</span></li>
+        <li><input type="checkbox"><span>Repetir una foto en ISO 100 y en ISO 6400 en el mismo lugar oscuro y comparar el resultado.</span></li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-check">Chequeo rápido</span>
+      <div class="q-text" style="margin-bottom:14px;">En una pista de baile con poca luz, ¿qué configuración es más segura?</div>
+      <div class="mc-options" data-correct="B">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">ISO bajo, velocidad baja, sin flash</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">ISO alto, velocidad alta, con flash</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">ISO bajo, velocidad alta, sin flash</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">ISO alto, velocidad baja, sin flash</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="mark-done-row"><button class="mark-done" data-mod="2">Marcar módulo 2 como completado</button></div>
+    <div class="nav-row"><button class="btn btn-ghost btn-nav" onclick="navigate(-1)">← Anterior</button><button class="btn btn-primary btn-nav" onclick="navigate(1)">Siguiente →</button></div>
+  </div>
+
+  <!-- MÓDULO 3 -->
+  <div class="module-section" id="mod-3" data-title="Ópticas Fotográficas">
+    <div class="module-header"><span class="module-badge">Semana 3</span><h2 class="module-title">Ópticas Fotográficas</h2></div>
+    <p class="module-goal">Objetivo: saber qué lente elegir en cada momento del evento, y entender qué hace único a cada uno.</p>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-teoria">Teoría</span>
+      <div class="card-title">Tipos, características y usos</div>
+      <div class="theory">
+        <p><strong>Distancia focal:</strong> define el ángulo de visión. Gran angular (16-35mm) para ambientes, salones completos y grupos grandes en espacios chicos. Normal (35-50mm) para versatilidad y narrativa cercana al ojo humano. Tele corto (85-135mm) para retratos con compresión de fondo y desenfoque marcado.</p>
+        <table>
+          <tr><th>Lente</th><th>Uso principal en eventos</th></tr>
+          <tr><td>24-70mm f/2.8 (zoom)</td><td>Todo terreno: ceremonia, salón, grupos, detalles a media distancia</td></tr>
+          <tr><td>70-200mm f/2.8 (zoom)</td><td>Ceremonias a distancia, discreción, reacciones de invitados, detalles sin invadir</td></tr>
+          <tr><td>35mm o 50mm f/1.4-1.8 (fijo)</td><td>Retratos, luz muy baja, fiestas, look cinematográfico</td></tr>
+          <tr><td>85mm f/1.8 (fijo)</td><td>Retratos individuales y de pareja con máximo desenfoque</td></tr>
+          <tr><td>16-35mm (zoom gran angular)</td><td>Salón completo, entradas, ambientes, arquitectura del lugar</td></tr>
+        </table>
+        <p><strong>Fijos vs. zoom:</strong> los fijos suelen ser más luminosos (mayor apertura máxima) y más nítidos, pero obligan a moverse. Los zoom dan velocidad de reacción — clave en eventos donde no se puede repetir la toma.</p>
+        <p><strong>Apertura máxima:</strong> un lente "rápido" (f/1.4, f/1.8, f/2.8) permite trabajar en salones oscuros sin disparar el ISO al máximo.</p>
+        <p><strong>Distorsión:</strong> el gran angular usado muy cerca de un rostro deforma las facciones — cuidado en retratos cercanos, mejor para planos generales.</p>
+        <p><strong>Estabilización óptica (OS/VR/IS):</strong> ayuda a trabajar a velocidades más bajas sin trípode, útil en salones oscuros con sujetos quietos.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-tips">Errores comunes</span>
+      <ul class="tip-list">
+        <li>Usar gran angular muy cerca para un retrato — deforma la cara.</li>
+        <li>Cambiar de lente justo en el momento crítico y perderse la foto.</li>
+        <li>No llevar un lente luminoso (f/1.8 o menor) para pista o salón oscuro.</li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-ejer">Ejercicio práctico</span>
+      <div class="card-title">Esta semana</div>
+      <ul class="checklist" data-storage-prefix="w3">
+        <li><input type="checkbox"><span>Fotografiar la misma escena con 3 distancias focales distintas (angular, normal, tele) y comparar cuál cuenta mejor la historia.</span></li>
+        <li><input type="checkbox"><span>Hacer un retrato con gran angular muy cerca y notar la distorsión; repetirlo con un lente normal o tele.</span></li>
+        <li><input type="checkbox"><span>Armar tu kit ideal de 2-3 lentes según el equipo disponible en el estudio.</span></li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-check">Chequeo rápido</span>
+      <div class="q-text" style="margin-bottom:14px;">¿Qué lente es más adecuado para un retrato de pareja con máximo desenfoque de fondo?</div>
+      <div class="mc-options" data-correct="C">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">16-35mm f/4</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">24-70mm f/2.8 a f/8</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">85mm f/1.8</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">10-18mm f/4.5</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="mark-done-row"><button class="mark-done" data-mod="3">Marcar módulo 3 como completado</button></div>
+    <div class="nav-row"><button class="btn btn-ghost btn-nav" onclick="navigate(-1)">← Anterior</button><button class="btn btn-primary btn-nav" onclick="navigate(1)">Siguiente →</button></div>
+  </div>
+
+  <!-- MÓDULO 4 -->
+  <div class="module-section" id="mod-4" data-title="La Luz">
+    <div class="module-header"><span class="module-badge">Semana 4</span><h2 class="module-title">La Luz</h2></div>
+    <p class="module-goal">Objetivo: leer la luz de un ambiente antes de disparar — su calidad, su origen y su dirección.</p>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-teoria">Teoría</span>
+      <div class="card-title">Calidad, origen y dirección</div>
+      <div class="theory">
+        <p>La fotografía es luz. Sin luz no hay forma, ni color, ni imagen. Todo pasa por entender cómo se comporta.</p>
+        <p><strong>Luz suave:</strong> sombras suaves, piel agradable, look elegante. Ideal para retratos, maquillaje, sesiones. Ejemplos: ventana, sombra, días nublados (si se usa flash, rebotarlo hacia arriba con difusor).</p>
+        <p><strong>Luz dura:</strong> sombras fuertes, contraste alto, dramatismo. Ideal para generar atmósfera, boliches, expresión. Ejemplo: sol del mediodía, flash directo.</p>
+        <p><strong>Luz natural:</strong> viene del sol, varía según hora y clima; dinámica y a veces impredecible. En eventos al aire libre, leerla bien es clave. <strong>Luz artificial:</strong> flashes, LED, iluminación del salón; da más control pero exige adaptación a su temperatura de color y dirección.</p>
+        <p><strong>Dirección de la luz:</strong> frontal (ilumina de frente, reduce sombras pero puede aplanar la imagen), cenital (desde arriba, sombras duras en ojos, común al mediodía), contraluz (desde atrás del sujeto, genera siluetas y brillo alrededor del cabello), lateral (da volumen, ideal para retratos con profundidad y dramatismo).</p>
+        <p>No existe una luz "correcta", sino una que se adapta a lo que se quiere transmitir. Antes de disparar en un salón: observar dónde están las luces más limpias, dónde hay mezcla de colores, qué zonas tienen mejor fondo y dónde conviene hacer retratos.</p>
+        <p><strong>Golden hour (referencia de sesiones al aire libre):</strong> el atardecer da un tono cálido que favorece la piel, sombras suaves y luz pareja que permite moverse sin perder calidad de exposición. Si no se puede elegir el horario, buscar zonas de sombra abundante (bosque, galería) como alternativa.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-tips">Errores comunes</span>
+      <ul class="tip-list">
+        <li>Ubicar al sujeto de espaldas a una ventana sin corregir la exposición (queda en sombra).</li>
+        <li>No recorrer el salón antes de la sesión buscando el rincón con mejor luz y fondo.</li>
+        <li>Ignorar la mezcla de temperaturas de color (luces cálidas del salón + LED frías).</li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-ejer">Ejercicio práctico</span>
+      <div class="card-title">Esta semana</div>
+      <ul class="checklist" data-storage-prefix="w4">
+        <li><input type="checkbox"><span>Fotografiar al mismo sujeto en luz suave (ventana/sombra) y en luz dura (sol directo) y comparar.</span></li>
+        <li><input type="checkbox"><span>Repetir el mismo retrato con 2 direcciones de luz distintas (lateral y contraluz).</span></li>
+        <li><input type="checkbox"><span>Entrar a un salón o espacio nuevo y en 2 minutos identificar el mejor rincón para retratos.</span></li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-check">Chequeo rápido</span>
+      <div class="q-text" style="margin-bottom:14px;">¿Qué tipo de luz es ideal para un retrato de piel suave y look elegante?</div>
+      <div class="mc-options" data-correct="A">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">Luz suave (ventana, sombra, día nublado)</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">Luz dura de flash directo</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">Sol del mediodía cenital</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">Contraluz total sin relleno</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="mark-done-row"><button class="mark-done" data-mod="4">Marcar módulo 4 como completado</button></div>
+    <div class="nav-row"><button class="btn btn-ghost btn-nav" onclick="navigate(-1)">← Anterior</button><button class="btn btn-primary btn-nav" onclick="navigate(1)">Siguiente →</button></div>
+  </div>
+
+  <!-- MÓDULO 5 -->
+  <div class="module-section" id="mod-5" data-title="Flash e Iluminación Artificial">
+    <div class="module-header"><span class="module-badge">Semana 5</span><h2 class="module-title">Flash e Iluminación Artificial</h2></div>
+    <p class="module-goal">Objetivo: usar el flash como herramienta de criterio, no como recurso automático de "última opción".</p>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-teoria">Teoría</span>
+      <div class="card-title">Rebote, dirección y sincronización</div>
+      <div class="theory">
+        <p><strong>Flash rebotado:</strong> apuntar el flash al techo o pared (blanco, no muy alto) suaviza la luz y evita sombras duras — la primera opción en salones.</p>
+        <p><strong>Flash directo:</strong> genera sombras marcadas y look plano; usarlo solo como recurso, idealmente con difusor o "bounce card" (tarjeta blanca que rebota parte de la luz hacia el sujeto).</p>
+        <p><strong>TTL vs. manual:</strong> TTL (automático) para situaciones cambiantes y rápidas como la pista de baile; manual para escenas controladas donde se necesita consistencia, como retratos posados.</p>
+        <p><strong>Alta velocidad de sincronización (HSS):</strong> permite usar flash con velocidades muy altas, útil para contraluces de día fuerte.</p>
+        <p><strong>Segunda cortina (rear curtain sync):</strong> ideal en pista de baile — congela al sujeto al final del movimiento dejando un rastro de luz más natural que la primera cortina.</p>
+        <p><strong>Techos altos o negros (no se puede rebotar):</strong> usar difusor, bounce card, subir ISO, o reubicarse cerca de una pared clara.</p>
+        <p>Siempre preferir un flash externo en zapata antes que el flash incorporado de la cámara: más potencia, más control de dirección, mejor calidad de luz.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-tips">Errores comunes</span>
+      <ul class="tip-list">
+        <li>Disparar flash directo de frente en primeros planos — sombra dura detrás del sujeto y posible efecto de ojos rojos.</li>
+        <li>No ajustar la potencia y "quemar" la foto (sobreexposición local).</li>
+        <li>Olvidarse pilas/baterías de repuesto cargadas — el error más común y más evitable.</li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-ejer">Ejercicio práctico</span>
+      <div class="card-title">Esta semana</div>
+      <ul class="checklist" data-storage-prefix="w5">
+        <li><input type="checkbox"><span>Fotografiar la misma escena con flash directo, flash rebotado y flash con difusor. Comparar la dureza de las sombras.</span></li>
+        <li><input type="checkbox"><span>Probar segunda cortina en una foto con movimiento (alguien caminando o bailando).</span></li>
+        <li><input type="checkbox"><span>Armar el checklist de pilas/baterías de flash de repuesto para el próximo evento.</span></li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-check">Chequeo rápido</span>
+      <div class="q-text" style="margin-bottom:14px;">El flash rebotado sirve principalmente para:</div>
+      <div class="mc-options" data-correct="B">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">Iluminar más fuerte</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">Suavizar la luz</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">Ahorrar batería</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">Aumentar el contraste</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="mark-done-row"><button class="mark-done" data-mod="5">Marcar módulo 5 como completado</button></div>
+    <div class="nav-row"><button class="btn btn-ghost btn-nav" onclick="navigate(-1)">← Anterior</button><button class="btn btn-primary btn-nav" onclick="navigate(1)">Siguiente →</button></div>
+  </div>
+
+  <!-- MÓDULO 6 -->
+  <div class="module-section" id="mod-6" data-title="Foco y Nitidez">
+    <div class="module-header"><span class="module-badge">Semana 6</span><h2 class="module-title">Foco y Nitidez</h2></div>
+    <p class="module-goal">Objetivo: que ningún momento importante se pierda por estar fuera de foco.</p>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-teoria">Teoría</span>
+      <div class="card-title">Modos de enfoque y causas del desenfoque</div>
+      <div class="theory">
+        <p>Una foto puede estar perfectamente expuesta y ser inutilizable si no está nítida donde importa (generalmente, los ojos).</p>
+        <p><strong>AF-S (enfoque simple):</strong> ideal para sujetos quietos — retratos posados, detalles.</p>
+        <p><strong>AF-C (enfoque continuo / seguimiento):</strong> imprescindible para sujetos en movimiento — entrada de novios, baile, niños corriendo.</p>
+        <p><strong>Enfoque manual:</strong> útil en situaciones muy específicas de poca luz extrema o macro, pero arriesgado en el ritmo de un evento.</p>
+        <p>Causas frecuentes de fotos desenfocadas: velocidad de obturación muy baja para la escena, punto de enfoque mal elegido (la cámara enfocó el fondo, no los ojos), profundidad de campo insuficiente en grupos con aperturas muy abiertas, y movimiento del propio fotógrafo al disparar.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-tips">Errores comunes</span>
+      <ul class="tip-list">
+        <li>Usar AF-S para sujetos en movimiento — el foco queda fijo y el sujeto avanza.</li>
+        <li>No cerrar un poco el diafragma en fotos grupales con muchas filas de personas.</li>
+        <li>Confiar en la vista previa de la pantalla sin hacer zoom para chequear nitidez real.</li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-ejer">Ejercicio práctico</span>
+      <div class="card-title">Esta semana</div>
+      <ul class="checklist" data-storage-prefix="w6">
+        <li><input type="checkbox"><span>Fotografiar una entrada o caminata en movimiento usando AF-C + seguimiento; revisar cuántas salieron nítidas.</span></li>
+        <li><input type="checkbox"><span>Repetir la misma toma en AF-S y comparar el porcentaje de aciertos.</span></li>
+        <li><input type="checkbox"><span>Hacer una foto grupal de 10+ personas y verificar que todas las caras estén nítidas (ajustando diafragma si hace falta).</span></li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-check">Chequeo rápido</span>
+      <div class="q-text" style="margin-bottom:14px;">Para una entrada de novios en movimiento, usás:</div>
+      <div class="mc-options" data-correct="B">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">AF-S</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">AF-C / seguimiento</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">Enfoque manual</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">Cualquier modo sirve igual</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="mark-done-row"><button class="mark-done" data-mod="6">Marcar módulo 6 como completado</button></div>
+    <div class="nav-row"><button class="btn btn-ghost btn-nav" onclick="navigate(-1)">← Anterior</button><button class="btn btn-primary btn-nav" onclick="navigate(1)">Siguiente →</button></div>
+  </div>
+
+  <!-- MÓDULO 7 -->
+  <div class="module-section" id="mod-7" data-title="Composición Funcional">
+    <div class="module-header"><span class="module-badge">Semana 7</span><h2 class="module-title">Composición Funcional</h2></div>
+    <p class="module-goal">Objetivo: componer para que la imagen se entienda de inmediato, sin depender de reglas rígidas.</p>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-teoria">Teoría</span>
+      <div class="card-title">Legibilidad antes que perfeccionismo</div>
+      <div class="theory">
+        <p>Que una foto sea "legible" en un evento significa que se entiende el momento de un vistazo: quién es el protagonista, qué está pasando y por qué importa. Esto es más importante que la creatividad extrema o el uso estricto de reglas clásicas.</p>
+        <p>Reglas clásicas (regla de tercios, líneas guía, encuadre) siguen siendo útiles como punto de partida, aplicadas con criterio y no como dogma.</p>
+        <p>Reglas prácticas específicas de eventos: dejar "aire" alrededor del sujeto para posible uso de texto/edición, evitar cortar articulaciones (codos, rodillas, tobillos) en el encuadre, cuidar el fondo (postes, carteles de salida de emergencia, gente cruzando de fondo), y ajustar la altura de la cámara según la escena (agacharse para fotografiar niños, elevar la cámara para grupos grandes).</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-tips">Errores comunes</span>
+      <ul class="tip-list">
+        <li>Cortar manos, pies o cabezas por apurarse en el encuadre.</li>
+        <li>No revisar el fondo antes de disparar (elementos que distraen o arruinan la foto).</li>
+        <li>Priorizar una composición "artística" por sobre que se entienda el momento.</li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-ejer">Ejercicio práctico</span>
+      <div class="card-title">Esta semana</div>
+      <ul class="checklist" data-storage-prefix="w7">
+        <li><input type="checkbox"><span>Tomar (o revisar) 10 fotos propias y recortar/reencuadrar aplicando reglas de composición.</span></li>
+        <li><input type="checkbox"><span>Identificar 3 fotos con fondo problemático y explicar cómo se hubieran evitado en el momento.</span></li>
+        <li><input type="checkbox"><span>Practicar tomar la misma foto desde 3 alturas distintas (agachado, a la altura de los ojos, elevado).</span></li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-check">Chequeo rápido</span>
+      <div class="q-text" style="margin-bottom:14px;">¿Qué es lo más importante en composición de eventos?</div>
+      <div class="mc-options" data-correct="C">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">Creatividad extrema</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">Que la foto sea artística</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">Que se entienda el momento</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">Usar reglas clásicas siempre</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="mark-done-row"><button class="mark-done" data-mod="7">Marcar módulo 7 como completado</button></div>
+    <div class="nav-row"><button class="btn btn-ghost btn-nav" onclick="navigate(-1)">← Anterior</button><button class="btn btn-primary btn-nav" onclick="navigate(1)">Siguiente →</button></div>
+  </div>
+
+  <!-- MÓDULO 8 -->
+  <div class="module-section" id="mod-8" data-title="Dirección de Modelos y Poses">
+    <div class="module-header"><span class="module-badge">Semana 8</span><h2 class="module-title">Dirección de Modelos y Poses</h2></div>
+    <p class="module-goal">Objetivo: dirigir personas frente a cámara con seguridad y rapidez, sin que se note forzado. Aplica a parejas, quinceañeras con su corte, familias y grupos.</p>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-teoria">Teoría</span>
+      <div class="card-title">Cómo leer e interpretar una pose</div>
+      <div class="theory">
+        <p>Saber replicar una pose no es copiarla mecánicamente, sino aprender a leerla. Toda imagen de referencia se puede analizar en partes:</p>
+        <ul>
+          <li><strong>El plano:</strong> ¿retrato cerrado, plano medio o toma amplia con entorno? Define cuánta cercanía transmite.</li>
+          <li><strong>El ángulo:</strong> ¿a la altura de los ojos, desde arriba o desde abajo? Cambia por completo la percepción emocional.</li>
+          <li><strong>El enfoque:</strong> ¿dónde está la nitidez principal — la mirada, las manos, un detalle? Ahí es donde se dirige la atención.</li>
+          <li><strong>La posición del cuerpo:</strong> distancia, contacto y dirección de las miradas entre las personas — eso genera la conexión.</li>
+          <li><strong>El contexto:</strong> cómo se usa el fondo, la luz y los elementos alrededor.</li>
+        </ul>
+        <p>Entrenar el ojo así permite no solo repetir poses, sino interpretarlas y adaptarlas al estilo propio del estudio.</p>
+        <p><strong>4 reglas de oro para relajar a quien dirigís</strong> (funcionan con parejas, con la quinceañera y su corte, o con una familia):</p>
+        <ul>
+          <li>"Disfruten, este momento es para ustedes" — sacarle el foco a la cámara desde el primer segundo.</li>
+          <li>"Prohibido mirar a cámara" (salvo que se pida explícitamente) — las mejores fotos salen cuando se conectan entre sí, no cuando buscan al fotógrafo con la mirada.</li>
+          <li>"Yo no existo, soy invisible" — el fotógrafo observa y captura, no interrumpe el momento.</li>
+          <li>Mantener cada indicación en movimiento: pedir que un gesto (abrazo, caminata, risa) se repita varias veces en vez de "quedarse quietos" — la naturalidad aparece en el movimiento, no en la pose congelada.</li>
+        </ul>
+        <p><strong>Luz y cámara para sesiones dirigidas:</strong> preferir luz de atardecer (tono cálido, sombras suaves, luz pareja) o zonas de sombra abundante si no se puede elegir el horario. Trabajar la mayor parte del tiempo con diafragma abierto (f/2-f/2.8), cerrándolo solo cuando se busca que se noten rayos de luz o más profundidad de campo en un grupo. Disparar en ráfaga corta sobre cada indicación para poder elegir después el mejor instante de la secuencia.</p>
+        <p><strong>4 categorías para organizar la dirección de una sesión (adaptables a bodas y 15 años):</strong></p>
+        <table>
+          <tr><th>Categoría</th><th>Intención</th></tr>
+          <tr><td>Conexión emocional</td><td>Ritmo lento, silencio, dar tiempo y espacio; el fotógrafo debe estar listo para disparar justo cuando la conexión se hace evidente</td></tr>
+          <tr><td>Movimiento, diversión y espontaneidad</td><td>Caminar, correr, girar, jugar — rompe la rigidez y genera fluidez</td></tr>
+          <tr><td>Detalles íntimos</td><td>Manos, miradas, objetos simbólicos (anillo, accesorio) — pequeños gestos que cuentan una gran historia</td></tr>
+          <tr><td>Fotos creativas</td><td>Contraluces, minimalismo, ángulos distintos, uso del entorno para diferenciar el estilo</td></tr>
+        </table>
+        <p><strong>Parejas:</strong> buscar contacto real (frentes juntas, manos, susurro) en vez de poses de catálogo. <strong>Quinceañera y corte / familias:</strong> la misma lógica de "sin mirar a cámara + movimiento continuo" funciona igual — reemplazar "la pareja" por el grupo protagonista y ajustar la indicación a su dinámica (caminar todas juntas, girar, reírse de algo puntual).</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-tips">Errores comunes</span>
+      <ul class="tip-list">
+        <li>Dar indicaciones ambiguas como "hagan algo lindo" — genera dudas e incomodidad.</li>
+        <li>Tardar demasiado en armar un grupo grande y perder la paciencia de los invitados.</li>
+        <li>Pedir "posá natural" — es la frase que más tensa a alguien frente a cámara; mejor dar una acción concreta.</li>
+        <li>No revisar detalles (ropa acomodada, pelo, objetos de fondo) antes de disparar la serie.</li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-ejer">Ejercicio práctico</span>
+      <div class="card-title">Esta semana</div>
+      <ul class="checklist" data-storage-prefix="w8">
+        <li><input type="checkbox"><span>Elegir 3 poses de referencia (una de cada categoría: conexión, movimiento, detalle) y "leerlas" antes de replicarlas: plano, ángulo, enfoque, posición, contexto.</span></li>
+        <li><input type="checkbox"><span>Hacer una mini sesión de 15 minutos con amigos o familia, dirigiendo esas 3 poses aplicando las 4 reglas de oro.</span></li>
+        <li><input type="checkbox"><span>Disparar en ráfaga corta sobre una misma indicación y elegir el mejor instante ("el punto dulce") de la secuencia.</span></li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-check">Chequeo rápido</span>
+      <div class="q-text" style="margin-bottom:14px;">Según el método de dirección invisible, ¿qué buscamos evitar durante una sesión dirigida?</div>
+      <div class="mc-options" data-correct="B">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">Que se rían</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">Que miren a cámara buscando al fotógrafo</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">Que se muevan</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">Que haya luz natural</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="mark-done-row"><button class="mark-done" data-mod="8">Marcar módulo 8 como completado</button></div>
+    <div class="nav-row"><button class="btn btn-ghost btn-nav" onclick="navigate(-1)">← Anterior</button><button class="btn btn-primary btn-nav" onclick="navigate(1)">Siguiente →</button></div>
+  </div>
+
+  <!-- MÓDULO 9 -->
+  <div class="module-section" id="mod-9" data-title="Narrativa y Momentos Clave">
+    <div class="module-header"><span class="module-badge">Semana 9</span><h2 class="module-title">Narrativa y Momentos Clave</h2></div>
+    <p class="module-goal">Objetivo: anticipar y no perderse los momentos que el cliente jamás va a perdonar que falten.</p>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-teoria">Teoría</span>
+      <div class="card-title">Contar una historia, no solo documentar</div>
+      <div class="theory">
+        <p>Perder un momento clave es mucho más grave que tener ruido o una leve subexposición en una imagen — eso se puede corregir, el momento perdido no.</p>
+        <p><strong>Checklist de momentos imperdibles (boda / 15 años):</strong></p>
+        <ul>
+          <li>Preparativos y detalles (vestido, anillos, invitaciones, accesorios)</li>
+          <li>Entrada al salón o ceremonia</li>
+          <li>Ceremonia / vals / intercambio de símbolo</li>
+          <li>Primer baile</li>
+          <li>Brindis y discursos</li>
+          <li>Corte de torta</li>
+          <li>Baile abierto / fiesta</li>
+          <li>Reacciones espontáneas de invitados (risas, lágrimas, abrazos)</li>
+        </ul>
+        <p>Anticipar un momento es leer las señales previas: la música cambia de ritmo, alguien se para con un micrófono, las luces bajan de intensidad — todas son pistas de que algo está por pasar.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-tips">Errores comunes</span>
+      <ul class="tip-list">
+        <li>Estar cambiando de lente o revisando la cámara justo cuando empieza un momento clave.</li>
+        <li>No tener un shot list y confiar solo en la memoria durante el evento.</li>
+        <li>Enfocarse solo en los protagonistas y perderse reacciones valiosas de invitados.</li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-ejer">Ejercicio práctico</span>
+      <div class="card-title">Esta semana</div>
+      <ul class="checklist" data-storage-prefix="w9">
+        <li><input type="checkbox"><span>Armar tu propio shot list con al menos 20 momentos, ordenados cronológicamente, para el próximo evento.</span></li>
+        <li><input type="checkbox"><span>Ver un video de boda/15 años y anotar en qué momento hubieras anticipado cada toma clave.</span></li>
+        <li><input type="checkbox"><span>Practicar detectar 3 "señales previas" a un momento importante en una reunión cotidiana.</span></li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-check">Chequeo rápido</span>
+      <div class="q-text" style="margin-bottom:14px;">¿Qué es más grave en un evento?</div>
+      <div class="mc-options" data-correct="B">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">Perder una foto creativa</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">Perder un momento clave</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">Tener ruido en una foto</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">Subexponer una imagen levemente</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="mark-done-row"><button class="mark-done" data-mod="9">Marcar módulo 9 como completado</button></div>
+    <div class="nav-row"><button class="btn btn-ghost btn-nav" onclick="navigate(-1)">← Anterior</button><button class="btn btn-primary btn-nav" onclick="navigate(1)">Siguiente →</button></div>
+  </div>
+
+  <!-- MÓDULO 10 -->
+  <div class="module-section" id="mod-10" data-title="Trato con Clientes y Equipo">
+    <div class="module-header"><span class="module-badge">Semana 10</span><h2 class="module-title">Trato con Clientes y Equipo</h2></div>
+    <p class="module-goal">Objetivo: generar confianza antes del evento, coordinar con proveedores y equipo propio, y manejar imprevistos con profesionalismo.</p>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-teoria">Teoría</span>
+      <div class="card-title">La conexión importa más que el equipo</div>
+      <div class="theory">
+        <p>Antes de sacar una buena foto, hay algo que vale más que la cámara: la conexión con el cliente. Si no se siente cómodo y en confianza, es casi imposible lograr imágenes auténticas.</p>
+        <p><strong>Entrevista inicial</strong> (antes de la sesión o el evento) — preguntas clave para entender la historia y las expectativas:</p>
+        <ul>
+          <li>¿Cómo se conocieron / cómo llegaron a este momento? — da base para una narrativa visual auténtica.</li>
+          <li>¿Cuáles son sus actividades o gustos en común? — puede inspirar poses y escenarios.</li>
+          <li>¿Hay un lugar o elemento significativo para incluir?</li>
+          <li>¿Qué estilo de fotos prefieren: natural, romántico, divertido, formal?</li>
+        </ul>
+        <p>Para 15 años o eventos familiares, adaptar a: qué significa este festejo para la familia, quiénes son las personas clave a fotografiar, qué momentos no pueden faltar.</p>
+        <p><strong>Generar confianza:</strong> comunicación abierta desde el principio (explicar cómo va a ser el proceso y qué esperar), ser transparente sobre el estilo de trabajo, cumplir lo que se promete, ser puntual y mostrar seguridad. Si el cliente ve al fotógrafo tranquilo y preparado, también se relaja.</p>
+        <p><strong>Adaptarse a la dinámica de cada cliente:</strong> personas tímidas — indicaciones simples, hacerlas moverse para que dejen de pensar en la cámara; personas con mucha energía — aprovechar esa chispa sin que se vea "actuado"; personas reservadas — buscar quietud y detalles sutiles, no forzar risas que no salen solas.</p>
+        <p><strong>Traducir expectativas:</strong> pedir 3-4 fotos de referencia que les gusten — no para copiarlas, sino para entender qué transmiten: puede ser la luz, la emoción o la estética general, más que la pose en sí.</p>
+        <p><strong>Detectar inseguridades</strong> ("no sabemos posar", "no salimos bien en fotos") y responder con seguridad: explicar que no hay que posar, que el fotógrafo guía todo el tiempo, y que lo único que tienen que hacer es disfrutar.</p>
+        <p><strong>Preparación interna del fotógrafo:</strong> la energía con la que se llega a una sesión se contagia al cliente. Antes de cada evento, tomarse un momento para bajar revoluciones y conectar con lo que se va a hacer — quien llega disperso, transmite esa dispersión.</p>
+        <p><strong>Vestuario (cuando corresponda sugerirlo):</strong> colores neutros o tierra funcionan en la mayoría de los entornos; evitar estampados o logos que distraigan; pedir una foto del vestuario el día anterior para anticipar ajustes de tono o estilo.</p>
+        <p><strong>Coordinación con otros proveedores:</strong> DJ, wedding planner, salón y camarógrafo — el fotógrafo no trabaja solo. Anticipar quién anuncia o dirige cada momento evita perder tomas clave.</p>
+        <p><strong>Equipo propio (segundo fotógrafo, asistente):</strong> roles claros definidos antes del evento — quién cubre qué ángulo, quién hace detalles, quién cubre reacciones y grupos.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-tips">Errores comunes</span>
+      <ul class="tip-list">
+        <li>No hacer una entrevista o reunión previa y llegar al evento sin conocer expectativas reales del cliente.</li>
+        <li>Prometer "van a salir natural" sin explicar cómo se logra eso, dejando la inseguridad intacta.</li>
+        <li>No presentarse con el wedding planner o salón al llegar — genera desorganización.</li>
+        <li>Discutir indicaciones o desacuerdos frente a los invitados.</li>
+        <li>No tener un plan si el segundo fotógrafo o asistente falla o se atrasa.</li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-ejer">Ejercicio práctico (role-play)</span>
+      <div class="card-title">Esta semana</div>
+      <ul class="checklist" data-storage-prefix="w10">
+        <li><input type="checkbox"><span>Redactar tu propio cuestionario de entrevista inicial (5-6 preguntas), con una versión para bodas y otra para 15 años.</span></li>
+        <li><input type="checkbox"><span>Practicar con un compañero identificar si es "tímido", "con energía" o "reservado", y ajustar las indicaciones en consecuencia.</span></li>
+        <li><input type="checkbox"><span>Simular una situación difícil (ej: la familia pide una foto imposible por falta de tiempo) y practicar la respuesta calma.</span></li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-check">Chequeo rápido</span>
+      <div class="q-text" style="margin-bottom:14px;">¿Cuándo es correcto intervenir y dirigir una escena en vez de solo observar?</div>
+      <div class="mc-options" data-correct="B">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">Nunca, siempre hay que ser invisible</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">Cuando el momento lo requiere y el tiempo es limitado</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">Solo si el cliente lo pide explícitamente</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">Solo en las fotos de estudio</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="mark-done-row"><button class="mark-done" data-mod="10">Marcar módulo 10 como completado</button></div>
+    <div class="nav-row"><button class="btn btn-ghost btn-nav" onclick="navigate(-1)">← Anterior</button><button class="btn btn-primary btn-nav" onclick="navigate(1)">Siguiente →</button></div>
+  </div>
+
+  <!-- MÓDULO 11 -->
+  <div class="module-section" id="mod-11" data-title="Criterio Profesional, Edición y Entrega">
+    <div class="module-header"><span class="module-badge">Semana 11</span><h2 class="module-title">Criterio Profesional, Edición y Entrega</h2></div>
+    <p class="module-goal">Objetivo: seleccionar, editar y entregar con coherencia y responsabilidad profesional.</p>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-teoria">Teoría</span>
+      <div class="card-title">De la tarjeta de memoria a la entrega final</div>
+      <div class="theory">
+        <p><strong>Selección:</strong> elegir por relevancia y calidad técnica, no solo por gusto personal. Ante un empate, priorizar el momento emocional sobre la perfección técnica — salvo que la foto sea técnicamente inutilizable (muy desenfocada o quemada).</p>
+        <p><strong>Coherencia de edición:</strong> mantener el mismo estilo de color y tono en toda la entrega (preset o ajuste consistente), cuidar el tono de piel, y evitar sobre-editar.</p>
+        <p><strong>Flujo de trabajo:</strong> selección/descarte → edición base → ajustes finales → exportación → entrega (galería online, USB, etc.), siempre con plazos claros comunicados al cliente desde el principio.</p>
+        <p><strong>Backup (regla 3-2-1):</strong> al menos 2 copias en dispositivos distintos + 1 copia en la nube, antes de formatear cualquier tarjeta de memoria.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-tips">Errores comunes</span>
+      <ul class="tip-list">
+        <li>Entregar todas las fotos sin seleccionar ni editar (satura al cliente y baja la percepción de calidad).</li>
+        <li>Prometer plazos de entrega que después no se cumplen.</li>
+        <li>Formatear tarjetas de memoria sin haber hecho backup completo primero.</li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-ejer">Ejercicio práctico</span>
+      <div class="card-title">Esta semana</div>
+      <ul class="checklist" data-storage-prefix="w11">
+        <li><input type="checkbox"><span>Tomar una carpeta de 100 fotos propias (o de práctica) y hacer una selección final de 30, con criterio de relevancia.</span></li>
+        <li><input type="checkbox"><span>Editar esas 30 fotos con un ajuste de color y tono consistente entre todas.</span></li>
+        <li><input type="checkbox"><span>Armar tu propio protocolo de backup (dispositivos + nube) antes de formatear una tarjeta.</span></li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-check">Chequeo rápido</span>
+      <div class="q-text" style="margin-bottom:14px;">¿Qué foto se entrega al cliente?</div>
+      <div class="mc-options" data-correct="C">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">Todas las fotos tomadas</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">Solo las más creativas</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">Las técnicamente correctas y relevantes</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">Las que le gustan más al fotógrafo</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="mark-done-row"><button class="mark-done" data-mod="11">Marcar módulo 11 como completado</button></div>
+    <div class="nav-row"><button class="btn btn-ghost btn-nav" onclick="navigate(-1)">← Anterior</button><button class="btn btn-primary btn-nav" onclick="navigate(1)">Siguiente →</button></div>
+  </div>
+
+  <!-- MÓDULO 12 -->
+  <div class="module-section" id="mod-12" data-title="Logística, Kit y Diagnóstico Final">
+    <div class="module-header"><span class="module-badge">Semana 12</span><h2 class="module-title">Logística, Kit de Trabajo y Diagnóstico Final</h2></div>
+    <p class="module-goal">Objetivo: llegar a cada evento con el equipo listo, y cerrar el plan con una autoevaluación honesta.</p>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-teoria">Teoría</span>
+      <div class="card-title">El kit de trabajo y la rutina previa</div>
+      <div class="theory">
+        <p><strong>Checklist de bolso:</strong> cuerpo de cámara principal + backup, lentes (angular, normal/tele luminoso, zoom versátil), flash externo + baterías/pilas cargadas y de repuesto, varias tarjetas de memoria (mejor varias chicas que una sola grande), cargadores, difusor/bounce card, trípode o monopie si aplica, kit de limpieza de sensor y lentes.</p>
+        <p><strong>Antes del evento:</strong> cargar todo la noche anterior, formatear tarjetas, revisar el pronóstico del clima y confirmar horarios con el cliente o planner.</p>
+        <p><strong>Durante el evento:</strong> rotar tarjetas de memoria periódicamente (no esperar a que se llenen), y si la cámara lo permite, grabar en doble tarjeta simultánea como respaldo inmediato.</p>
+        <p><strong>Si algo falla:</strong> tener cuerpo de cámara y flash de backup siempre a mano, y un plan si se corta la luz del salón (flash con batería propia, linterna de emergencia).</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-tips">Errores comunes</span>
+      <ul class="tip-list">
+        <li>Llegar al evento sin haber cargado baterías la noche anterior.</li>
+        <li>Usar una sola tarjeta de memoria grande durante todo el evento (si falla, se pierde todo).</li>
+        <li>No tener equipo de backup para el elemento más crítico: la cámara principal.</li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-ejer">Ejercicio práctico final</span>
+      <div class="card-title">Cierre del plan de estudios</div>
+      <ul class="checklist" data-storage-prefix="w12">
+        <li><input type="checkbox"><span>Armar tu checklist personal de bolso y usarlo antes del próximo evento real.</span></li>
+        <li><input type="checkbox"><span>Repasar los 12 módulos y anotar tu mayor progreso y tu mayor debilidad pendiente.</span></li>
+        <li><input type="checkbox"><span>Completar el <a href="cuestionario-fotografia.html" style="color:var(--accent);">cuestionario de evaluación final</a> con honestidad.</span></li>
+      </ul>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-check">Chequeo rápido</span>
+      <div class="q-text" style="margin-bottom:14px;">¿Por qué conviene usar varias tarjetas de memoria chicas en vez de una sola grande?</div>
+      <div class="mc-options" data-correct="A">
+        <div class="mc-option" data-letter="A"><div class="mc-letter">A</div><div class="mc-label">Si una falla, no se pierde todo el evento</div></div>
+        <div class="mc-option" data-letter="B"><div class="mc-letter">B</div><div class="mc-label">Porque son más baratas</div></div>
+        <div class="mc-option" data-letter="C"><div class="mc-letter">C</div><div class="mc-label">Porque graban más rápido siempre</div></div>
+        <div class="mc-option" data-letter="D"><div class="mc-letter">D</div><div class="mc-label">No hay ninguna razón real</div></div>
+      </div>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <div class="hero" style="margin-top:24px;">
+      <div class="hero-emoji">🎓</div>
+      <h2 class="hero-title" style="font-size:20px;">¡Plan de estudios completado!</h2>
+      <p class="hero-sub">Ahora es momento de la evaluación integral: 8 ejes, casos prácticos y diagnóstico personal.</p>
+      <div class="cta-row"><a class="btn btn-primary" href="cuestionario-fotografia.html">Ir a la Evaluación Final →</a></div>
+    </div>
+
+    <div class="mark-done-row"><button class="mark-done" data-mod="12">Marcar módulo 12 como completado</button></div>
+    <div class="nav-row"><button class="btn btn-ghost btn-nav" onclick="navigate(-1)">← Anterior</button><button class="btn btn-primary btn-nav" onclick="goTo(0)">Volver al Inicio</button></div>
+  </div>
+
+</div>
+
+<script>
+  const TOTAL_MODULES = 12;
+  let current = 0;
+  const modNames = ["Inicio","Mentalidad","Cámara","Ópticas","La Luz","Flash","Foco","Composición","Dirección","Narrativa","Clientes","Edición","Kit Final"];
+
+  const nav = document.getElementById('module-nav');
+  modNames.forEach((m, i) => {
+    const tab = document.createElement('div');
+    tab.className = 'mod-tab' + (i === 0 ? ' active' : '');
+    tab.textContent = m;
+    tab.id = `tab-${i}`;
+    tab.onclick = () => goTo(i);
+    nav.appendChild(tab);
+  });
+
+  function updateProgress() {
+    let doneCount = 0;
+    for (let i = 1; i <= TOTAL_MODULES; i++) {
+      if (localStorage.getItem('lbj_mod_done_' + i) === '1') doneCount++;
+    }
+    const pct = Math.round((doneCount / TOTAL_MODULES) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = `${doneCount} / ${TOTAL_MODULES} módulos completados`;
+    document.getElementById('progress-pct').textContent = pct + '%';
+    for (let i = 1; i <= TOTAL_MODULES; i++) {
+      const tab = document.getElementById(`tab-${i}`);
+      if (!tab) continue;
+      if (localStorage.getItem('lbj_mod_done_' + i) === '1') tab.classList.add('done');
+      else tab.classList.remove('done');
+    }
+  }
+
+  function goTo(idx) {
+    document.querySelectorAll('.module-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.mod-tab').forEach(t => t.classList.remove('active'));
+    const section = document.getElementById(`mod-${idx}`);
+    if (section) section.classList.add('active');
+    const tab = document.getElementById(`tab-${idx}`);
+    if (tab) tab.classList.add('active');
+    current = idx;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function navigate(dir) {
+    const next = current + dir;
+    if (next < 0 || next > TOTAL_MODULES) return;
+    goTo(next);
+  }
+
+  document.querySelectorAll('.mc-options').forEach(group => {
+    const correct = group.dataset.correct;
+    const feedback = group.nextElementSibling;
+    group.querySelectorAll('.mc-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (group.classList.contains('answered')) return;
+        group.classList.add('answered');
+        group.querySelectorAll('.mc-option').forEach(o => o.classList.add('locked'));
+        const chosen = opt.dataset.letter;
+        if (chosen === correct) {
+          opt.classList.add('selected-correct');
+          feedback.textContent = '✓ ¡Correcto!';
+          feedback.className = 'mc-feedback correct';
+        } else {
+          opt.classList.add('selected-wrong');
+          feedback.textContent = `✗ Incorrecto. La respuesta correcta es la opción ${correct}.`;
+          feedback.className = 'mc-feedback wrong';
+          group.querySelector(`[data-letter="${correct}"]`).classList.add('revealed-correct');
+        }
+      });
+    });
+  });
+
+  document.querySelectorAll('.checklist').forEach(list => {
+    const prefix = list.dataset.storagePrefix;
+    list.querySelectorAll('li').forEach((li, i) => {
+      const cb = li.querySelector('input[type="checkbox"]');
+      const key = `lbj_${prefix}_item_${i}`;
+      if (localStorage.getItem(key) === '1') { cb.checked = true; li.classList.add('checked'); }
+      cb.addEventListener('change', () => {
+        if (cb.checked) { li.classList.add('checked'); localStorage.setItem(key, '1'); }
+        else { li.classList.remove('checked'); localStorage.removeItem(key); }
+      });
+    });
+  });
+
+  document.querySelectorAll('.mark-done').forEach(btn => {
+    const mod = btn.dataset.mod;
+    const key = 'lbj_mod_done_' + mod;
+    if (localStorage.getItem(key) === '1') { btn.classList.add('is-done'); btn.textContent = `✓ Módulo ${mod} completado`; }
+    btn.addEventListener('click', () => {
+      if (localStorage.getItem(key) === '1') {
+        localStorage.removeItem(key);
+        btn.classList.remove('is-done');
+        btn.textContent = `Marcar módulo ${mod} como completado`;
+      } else {
+        localStorage.setItem(key, '1');
+        btn.classList.add('is-done');
+        btn.textContent = `✓ Módulo ${mod} completado`;
+      }
+      updateProgress();
+    });
+  });
+
+  updateProgress();
+</script>
+</body>
+</html>
