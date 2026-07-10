@@ -128,6 +128,110 @@
 
   .source-note { font-size: 11.5px; color: var(--muted); font-style: italic; margin-top: 10px; }
 
+  /* ===== SIMULADOR DE EXPOSICIÓN ===== */
+  .sim-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; }
+  @media (max-width: 640px) { .sim-grid { grid-template-columns: 1fr; } }
+  .sim-preview { display: flex; flex-direction: column; gap: 10px; }
+  .sim-scene { position: relative; width: 100%; aspect-ratio: 4/3; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: #000; }
+  .sim-bg { position: absolute; inset: 0; background: radial-gradient(circle at 60% 30%, #6b5a3a, #1a1408 70%); transition: filter .25s ease, background-color .25s ease; }
+  .sim-subject { position: absolute; left: 50%; top: 52%; transform: translate(-50%,-50%); font-size: 54px; filter: drop-shadow(0 4px 10px rgba(0,0,0,.5)); transition: filter .25s ease; z-index: 3; }
+  .sim-dot { position: absolute; left: 18%; top: 78%; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); transition: box-shadow .25s ease; z-index: 2; }
+  .sim-grain { position: absolute; inset: 0; z-index: 4; opacity: 0; mix-blend-mode: overlay; pointer-events: none; transition: opacity .25s ease;
+    background-image: repeating-radial-gradient(circle at 10% 20%, #fff 0, transparent 1px), repeating-radial-gradient(circle at 70% 60%, #fff 0, transparent 1px), repeating-radial-gradient(circle at 40% 85%, #fff 0, transparent 1px);
+    background-size: 3px 3px, 5px 5px, 4px 4px; }
+  .sim-readout { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sim-badge { font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 99px; background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+  .sim-controls { display: flex; flex-direction: column; gap: 16px; justify-content: center; }
+  .sim-controls label { font-size: 12.5px; color: var(--muted); font-weight: 600; display: flex; justify-content: space-between; }
+  .sim-controls label span { color: var(--accent); }
+  .sim-controls input[type="range"] { width: 100%; accent-color: var(--accent); }
+
+  /* ===== COMPARADOR ANTES / DESPUÉS ===== */
+  .compare-wrap { position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); margin-bottom: 12px; }
+  .compare-after { position: absolute; inset: 0; }
+  .compare-before { position: absolute; top: 0; left: 0; height: 100%; width: 50%; overflow: hidden; border-right: 2px solid var(--accent); z-index: 2; }
+  .compare-before-inner { position: absolute; top: 0; left: 0; height: 100%; width: var(--wrap-w, 600px); }
+  .compare-range { position: absolute; bottom: 10px; left: 5%; width: 90%; z-index: 5; accent-color: var(--accent); }
+  .compare-labels { position: absolute; top: 10px; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 14px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: var(--text); z-index: 5; pointer-events: none; }
+  .compare-labels span { background: rgba(12,12,14,.55); padding: 4px 10px; border-radius: 99px; }
+  .grid-toggle-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 13px; color: var(--muted); }
+  .grid-toggle-row input { accent-color: var(--accent); }
+  .thirds-grid { position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: 0; transition: opacity .2s ease; }
+  .thirds-grid.on { opacity: 1; }
+  .thirds-grid::before, .thirds-grid::after { content: ""; position: absolute; background: rgba(232,168,56,.55); }
+  .thirds-grid::before { left: 33.33%; top: 0; width: 1px; height: 100%; box-shadow: 66.66% 0 0 rgba(232,168,56,.55); }
+  .thirds-grid::after { top: 33.33%; left: 0; height: 1px; width: 100%; box-shadow: 0 66.66% 0 rgba(232,168,56,.55); }
+
+  /* ===== JUEGO DE EMPAREJAR ===== */
+  .match-game { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 6px; }
+  @media (max-width: 560px) { .match-game { grid-template-columns: 1fr; } }
+  .match-col { display: flex; flex-direction: column; gap: 10px; }
+  .match-item { background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 13.5px; cursor: pointer; transition: all .15s ease; }
+  .match-item:hover { border-color: #48484f; }
+  .match-item.selected { border-color: var(--accent); background: var(--accent-dim); }
+  .match-item.correct { border-color: var(--correct); background: rgba(76,175,130,.12); cursor: default; }
+  .match-item.wrong { border-color: var(--wrong); background: rgba(224,90,90,.12); }
+  .match-status { margin-top: 14px; font-size: 13px; color: var(--muted); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .match-reset { background: var(--card); border: 1px solid var(--border); color: var(--muted); padding: 8px 16px; border-radius: 99px; font-size: 12px; font-weight: 600; cursor: pointer; }
+  .match-reset:hover { color: var(--text); border-color: #48484f; }
+
+  /* ===== DIAGRAMA DE LUZ ===== */
+  .light-diagram { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .light-stage { position: relative; width: 220px; height: 220px; }
+  .light-face { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 120px; height: 140px; border-radius: 50% 50% 46% 46%; background: radial-gradient(circle at 42% 38%, #e8c79a, #b98f5e 75%); z-index: 2; overflow: hidden; transition: filter .4s ease; }
+  .light-shadow { position: absolute; inset: 0; background: rgba(0,0,0,.45); opacity: 0; transition: opacity .4s ease, clip-path .4s ease; }
+  .shadow-frontal { opacity: .08; }
+  .shadow-cenital { opacity: .4; clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0% 100%); }
+  .shadow-lateral { opacity: .5; clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%); }
+  .shadow-contraluz { opacity: .82; }
+  .light-bulb { position: absolute; width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle, #fff6d8, var(--accent) 70%); box-shadow: 0 0 18px 6px rgba(232,168,56,.55); transition: top .5s ease, left .5s ease, opacity .5s ease, z-index 0s .25s; z-index: 3; }
+  .light-bulb.behind { z-index: 1; opacity: .85; box-shadow: 0 0 26px 10px rgba(232,168,56,.35); }
+  .light-face.rimglow { filter: drop-shadow(0 0 10px rgba(232,168,56,.65)); }
+  .light-btns { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .light-btn { background: var(--surface); border: 1px solid var(--border); color: var(--muted); padding: 9px 16px; border-radius: 99px; font-size: 12.5px; font-weight: 600; cursor: pointer; transition: all .15s ease; }
+  .light-btn:hover { color: var(--text); border-color: #48484f; }
+  .light-btn.active { color: #0c0c0e; background: var(--accent); border-color: var(--accent); }
+  .light-desc { font-size: 13.5px; color: var(--muted); text-align: center; max-width: 420px; line-height: 1.6; min-height: 40px; }
+
+  /* ===== FOCO AF-S vs AF-C ===== */
+  .focus-demo { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 560px) { .focus-demo { grid-template-columns: 1fr; } }
+  .focus-scene { position: relative; height: 90px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .focus-box { position: absolute; top: 50%; left: 50%; width: 46px; height: 46px; margin: -23px 0 0 -23px; border: 2px solid var(--accent); border-radius: 8px; }
+  .focus-dot { position: absolute; top: 50%; left: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #8090ff; }
+  .focus-demo.playing .afs-dot { animation: focusMoveBlur 3s ease-in-out infinite alternate; }
+  .focus-demo.playing .afc-dot { animation: focusMove 3s ease-in-out infinite alternate; }
+  .focus-demo.playing .afc-box { animation: focusMove 3s ease-in-out infinite alternate; }
+  @keyframes focusMove { 0% { transform: translateX(-70px); } 100% { transform: translateX(70px); } }
+  @keyframes focusMoveBlur { 0% { transform: translateX(-70px); filter: blur(5px); } 50% { transform: translateX(0); filter: blur(0px); } 100% { transform: translateX(70px); filter: blur(5px); } }
+  .focus-caption { font-size: 12px; color: var(--muted); text-align: center; margin-top: 8px; }
+  .focus-toggle-row { display: flex; justify-content: center; margin-top: 12px; }
+  .focus-toggle { background: var(--card); border: 1px solid var(--accent); color: var(--accent); padding: 9px 20px; border-radius: 99px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+
+  /* ===== GALERÍA DE POSES ===== */
+  .pose-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .pose-btn { background: var(--surface); border: 1px solid var(--border); color: var(--muted); padding: 9px 16px; border-radius: 99px; font-size: 12.5px; font-weight: 600; cursor: pointer; transition: all .15s ease; }
+  .pose-btn:hover { color: var(--text); }
+  .pose-btn.active { color: #0c0c0e; background: var(--accent); border-color: var(--accent); }
+  .pose-stage { min-height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .pose-caption { font-size: 13px; color: var(--muted); text-align: center; max-width: 460px; line-height: 1.6; }
+  .pose-scene { display: none; flex-direction: column; align-items: center; gap: 12px; animation: fadeUp .3s ease both; }
+  .pose-scene.active { display: flex; }
+
+  /* ===== FLASHCARDS ===== */
+  .flashcard-wrap { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  .flashcard { width: 100%; max-width: 480px; height: 200px; perspective: 1200px; cursor: pointer; }
+  .flashcard-inner { position: relative; width: 100%; height: 100%; transition: transform .5s; transform-style: preserve-3d; }
+  .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+  .flashcard-front, .flashcard-back { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 16px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; text-align: center; padding: 28px; font-size: 16px; line-height: 1.5; }
+  .flashcard-front { background: var(--card); color: var(--text); font-weight: 500; }
+  .flashcard-back { background: var(--accent-dim); color: var(--accent); font-weight: 500; transform: rotateY(180deg); border-color: var(--accent); }
+  .flash-hint { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+  .flash-controls { display: flex; align-items: center; gap: 14px; }
+  .flash-controls button { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 10px 18px; border-radius: 99px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s ease; }
+  .flash-controls button:hover { border-color: var(--accent); color: var(--accent); }
+  #flash-counter { font-size: 12.5px; color: var(--muted); min-width: 60px; text-align: center; }
+
   @media (max-width: 560px) {
     .progress-wrap { display: none; }
     .module-title { font-size: 19px; }
@@ -165,7 +269,7 @@
     <div class="hero">
       <div class="hero-emoji">📸</div>
       <h1 class="hero-title">Plan de Estudios · Fotografía de Eventos</h1>
-      <p class="hero-sub">12 semanas para formar un equipo con criterio profesional real en bodas, 15 años y celebraciones sociales. Un módulo por semana: teoría aplicada, ejercicio práctico y autoevaluación.</p>
+      <p class="hero-sub">12 semanas para formar un equipo con criterio profesional real en bodas, 15 años y celebraciones sociales. Un módulo por semana: teoría aplicada, ejercicio práctico interactivo y autoevaluación.</p>
       <div class="method-grid">
         <div class="method-item"><div class="m-emoji">📖</div><div class="m-title">Teoría</div><div class="m-desc">Leer el módulo de la semana</div></div>
         <div class="method-item"><div class="m-emoji">🛠</div><div class="m-title">Práctica</div><div class="m-desc">Hacer el ejercicio real, con cámara en mano</div></div>
@@ -183,13 +287,13 @@
       <table class="schedule-table">
         <tr><th>Semana</th><th>Módulo</th><th>Objetivo</th><th>Entregable / práctica</th></tr>
         <tr><td class="week-num">1</td><td>Mentalidad del Fotógrafo Social</td><td>Entender el rol más allá de apretar el obturador</td><td>Registro de 5 micro-momentos anticipados</td></tr>
-        <tr><td class="week-num">2</td><td>Cámara y Triángulo de Exposición</td><td>Dominar ISO, velocidad y diafragma</td><td>Tabla propia de configuraciones por situación</td></tr>
-        <tr><td class="week-num">3</td><td>Ópticas Fotográficas</td><td>Elegir el lente correcto para cada momento</td><td>Misma escena en 3 distancias focales</td></tr>
-        <tr><td class="week-num">4</td><td>La Luz</td><td>Leer luz natural/artificial, dura/suave</td><td>Mismo sujeto en 4 condiciones de luz</td></tr>
-        <tr><td class="week-num">5</td><td>Flash e Iluminación Artificial</td><td>Usar flash con criterio, no por default</td><td>Comparar flash directo vs rebotado vs difusor</td></tr>
-        <tr><td class="week-num">6</td><td>Foco y Nitidez</td><td>Elegir el modo de foco según la escena</td><td>Serie de fotos en movimiento sin desenfoque</td></tr>
-        <tr><td class="week-num">7</td><td>Composición Funcional</td><td>Componer para que la imagen se entienda ya</td><td>Recomponer/recortar 10 fotos propias</td></tr>
-        <tr><td class="week-num">8</td><td>Dirección de Modelos y Poses</td><td>Dirigir parejas, quinceañeras, familias y grupos</td><td>Mini sesión dirigida de 15 minutos</td></tr>
+        <tr><td class="week-num">2</td><td>Cámara y Triángulo de Exposición</td><td>Dominar ISO, velocidad y diafragma</td><td>Simulador + tabla propia de configuraciones</td></tr>
+        <tr><td class="week-num">3</td><td>Ópticas Fotográficas</td><td>Elegir el lente correcto para cada momento</td><td>Juego de emparejar lente/uso</td></tr>
+        <tr><td class="week-num">4</td><td>La Luz</td><td>Leer luz natural/artificial, dura/suave</td><td>Diagrama interactivo de dirección de luz</td></tr>
+        <tr><td class="week-num">5</td><td>Flash e Iluminación Artificial</td><td>Usar flash con criterio, no por default</td><td>Comparador flash directo vs rebotado</td></tr>
+        <tr><td class="week-num">6</td><td>Foco y Nitidez</td><td>Elegir el modo de foco según la escena</td><td>Animación AF-S vs AF-C</td></tr>
+        <tr><td class="week-num">7</td><td>Composición Funcional</td><td>Componer para que la imagen se entienda ya</td><td>Comparador antes/después + grilla de tercios</td></tr>
+        <tr><td class="week-num">8</td><td>Dirección de Modelos y Poses</td><td>Dirigir parejas, quinceañeras, familias y grupos</td><td>Galería de las 4 categorías de poses</td></tr>
         <tr><td class="week-num">9</td><td>Narrativa y Momentos Clave</td><td>Anticipar y no perderse lo importante</td><td>Shot list propia de 20+ momentos</td></tr>
         <tr><td class="week-num">10</td><td>Trato con Clientes y Equipo</td><td>Entrevista previa, confianza y manejo de crisis</td><td>Cuestionario de entrevista inicial propio</td></tr>
         <tr><td class="week-num">11</td><td>Criterio Profesional, Edición y Entrega</td><td>Seleccionar, editar y entregar con coherencia</td><td>Selección editada de 30 fotos</td></tr>
@@ -201,9 +305,9 @@
       <div class="card-title">📋 Cómo usar este plan</div>
       <div class="theory">
         <ul>
-          <li>Un módulo por semana. Cada módulo tiene: teoría aplicada, errores comunes / tips, un ejercicio práctico obligatorio y un chequeo rápido de 1-2 preguntas.</li>
+          <li>Un módulo por semana. Cada módulo tiene: teoría aplicada, un componente interactivo (simulador, diagrama, comparador o juego), errores comunes / tips, un ejercicio práctico obligatorio y un chequeo rápido.</li>
           <li>El ejercicio práctico se hace con cámara en mano — no alcanza con leer. Fotografía real o simulacro de evento.</li>
-          <li>Al terminar los 12 módulos, se completa el <a href="cuestionario-fotografia.html">cuestionario de evaluación final</a> (8 ejes, incluye diagnóstico personal).</li>
+          <li>Al terminar los 12 módulos, repasá con las <a href="#" onclick="goTo(13);return false;">flashcards</a> y completá el <a href="cuestionario-fotografia.html">cuestionario de evaluación final</a> (8 ejes, incluye diagnóstico personal).</li>
           <li>El progreso se guarda automáticamente en este navegador con el botón "Marcar módulo como completado" al final de cada semana.</li>
         </ul>
         <p class="source-note">Este plan integra el manual interno "Fotografía Social · Bodas &amp; 15 Años" y contenido curado de guías profesionales de sesiones documentales, adaptado a bodas y 15 años.</p>
@@ -291,6 +395,36 @@
     </div>
 
     <div class="q-card">
+      <span class="q-type-tag tag-ejer">Interactivo</span>
+      <div class="card-title">🎛 Simulador del triángulo de exposición</div>
+      <div class="theory"><p>Movés los tres controles y mirá en tiempo real cómo cambia el resultado: brillo, ruido y profundidad de campo. Es la misma lógica que usás con la cámara en la mano.</p></div>
+      <div class="sim-grid">
+        <div class="sim-preview">
+          <div class="sim-scene" id="sim-scene">
+            <div class="sim-bg" id="sim-bg"></div>
+            <div class="sim-subject">🙂</div>
+            <div class="sim-dot" id="sim-dot"></div>
+            <div class="sim-grain" id="sim-grain"></div>
+          </div>
+          <div class="sim-readout">
+            <span class="sim-badge" id="badge-ev">EV: 0.0 (correcta)</span>
+            <span class="sim-badge" id="badge-noise">Ruido: bajo</span>
+            <span class="sim-badge" id="badge-motion">Congelado</span>
+            <span class="sim-badge" id="badge-dof">Profundidad: media</span>
+          </div>
+        </div>
+        <div class="sim-controls">
+          <label>ISO <span id="lbl-iso">400</span></label>
+          <input type="range" id="ctrl-iso" min="100" max="6400" step="100" value="400">
+          <label>Velocidad <span id="lbl-shutter">1/160</span></label>
+          <input type="range" id="ctrl-shutter" min="0" max="10" step="1" value="6">
+          <label>Diafragma <span id="lbl-aperture">f/4</span></label>
+          <input type="range" id="ctrl-aperture" min="0" max="7" step="1" value="3">
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card">
       <span class="q-type-tag tag-tips">Errores comunes</span>
       <ul class="tip-list">
         <li>Tenerle miedo al ISO alto y preferir una foto movida antes que una con ruido.</li>
@@ -351,6 +485,44 @@
     </div>
 
     <div class="q-card">
+      <span class="q-type-tag tag-ejer">Interactivo</span>
+      <div class="card-title">📐 Ángulo de visión según la focal</div>
+      <div class="theory"><p>El mismo punto de cámara, tres lentes distintos: notá cómo cambia cuánto entra en cuadro.</p></div>
+      <svg viewBox="0 0 400 200" style="width:100%;height:auto;">
+        <polygon points="30,180 370,20 370,180" fill="rgba(100,120,255,.12)" stroke="#8090ff" stroke-width="1.5"/>
+        <polygon points="30,180 340,70 340,180" fill="rgba(232,168,56,.15)" stroke="#e8a838" stroke-width="1.5"/>
+        <polygon points="30,180 300,140 300,180" fill="rgba(100,200,160,.2)" stroke="#6ac8a0" stroke-width="1.5"/>
+        <circle cx="30" cy="180" r="5" fill="#f0ede8"/>
+        <text x="345" y="15" fill="#8090ff" font-size="11" font-family="Outfit">16-35mm</text>
+        <text x="315" y="65" fill="#e8a838" font-size="11" font-family="Outfit">50mm</text>
+        <text x="230" y="135" fill="#6ac8a0" font-size="11" font-family="Outfit">200mm</text>
+        <text x="6" y="195" fill="#7a7882" font-size="10" font-family="Outfit">cámara</text>
+      </svg>
+      <p class="source-note">Cuanto más angular, más ángulo de visión entra en cuadro (más contexto); cuanto más tele, menos ángulo pero más compresión y desenfoque de fondo.</p>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-ejer">Juego</span>
+      <div class="card-title">🎯 Emparejá cada lente con su uso</div>
+      <div class="theory"><p>Elegí un lente y después el uso que le corresponde.</p></div>
+      <div class="match-game" id="match-lenses" data-pairs='{"l1":"u1","l2":"u2","l3":"u3","l4":"u4"}'>
+        <div class="match-col">
+          <div class="match-item" data-side="left" data-key="l1">24-70mm f/2.8</div>
+          <div class="match-item" data-side="left" data-key="l2">70-200mm f/2.8</div>
+          <div class="match-item" data-side="left" data-key="l3">35-50mm f/1.4-1.8</div>
+          <div class="match-item" data-side="left" data-key="l4">85mm f/1.8</div>
+        </div>
+        <div class="match-col">
+          <div class="match-item" data-side="right" data-key="u3">Fiestas y luz muy baja</div>
+          <div class="match-item" data-side="right" data-key="u1">Todo terreno: ceremonia, salón, grupos</div>
+          <div class="match-item" data-side="right" data-key="u4">Retrato con máximo desenfoque de fondo</div>
+          <div class="match-item" data-side="right" data-key="u2">Ceremonias a distancia y discreción</div>
+        </div>
+      </div>
+      <div class="match-status"><span id="match-lenses-status">0 / 4 correctas</span><button class="match-reset" data-game="match-lenses">↺ Reiniciar</button></div>
+    </div>
+
+    <div class="q-card">
       <span class="q-type-tag tag-tips">Errores comunes</span>
       <ul class="tip-list">
         <li>Usar gran angular muy cerca para un retrato — deforma la cara.</li>
@@ -401,6 +573,25 @@
         <p><strong>Dirección de la luz:</strong> frontal (ilumina de frente, reduce sombras pero puede aplanar la imagen), cenital (desde arriba, sombras duras en ojos, común al mediodía), contraluz (desde atrás del sujeto, genera siluetas y brillo alrededor del cabello), lateral (da volumen, ideal para retratos con profundidad y dramatismo).</p>
         <p>No existe una luz "correcta", sino una que se adapta a lo que se quiere transmitir. Antes de disparar en un salón: observar dónde están las luces más limpias, dónde hay mezcla de colores, qué zonas tienen mejor fondo y dónde conviene hacer retratos.</p>
         <p><strong>Golden hour (referencia de sesiones al aire libre):</strong> el atardecer da un tono cálido que favorece la piel, sombras suaves y luz pareja que permite moverse sin perder calidad de exposición. Si no se puede elegir el horario, buscar zonas de sombra abundante (bosque, galería) como alternativa.</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-ejer">Interactivo</span>
+      <div class="card-title">💡 Diagrama de dirección de luz</div>
+      <div class="theory"><p>Elegí una dirección y mirá cómo se mueve la luz y cómo cambia la sombra sobre el rostro.</p></div>
+      <div class="light-diagram">
+        <div class="light-stage">
+          <div class="light-face" id="light-face"><div class="light-shadow shadow-frontal" id="light-shadow"></div></div>
+          <div class="light-bulb" id="light-bulb" style="top:82%; left:50%;"></div>
+        </div>
+        <div class="light-btns">
+          <button class="light-btn active" data-dir="frontal">Frontal</button>
+          <button class="light-btn" data-dir="cenital">Cenital</button>
+          <button class="light-btn" data-dir="lateral">Lateral</button>
+          <button class="light-btn" data-dir="contraluz">Contraluz</button>
+        </div>
+        <p class="light-desc" id="light-desc">Frontal: ilumina de frente, reduce sombras pero puede aplanar la imagen.</p>
       </div>
     </div>
 
@@ -459,6 +650,36 @@
     </div>
 
     <div class="q-card">
+      <span class="q-type-tag tag-ejer">Interactivo</span>
+      <div class="card-title">↔ Comparador: flash directo vs. rebotado</div>
+      <div class="theory"><p>Arrastrá el control para comparar la dureza de la sombra en cada técnica.</p></div>
+      <div class="compare-wrap" id="compare-flash">
+        <div class="compare-after">
+          <svg viewBox="0 0 300 170" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="background:#20242b;">
+            <ellipse cx="150" cy="150" rx="70" ry="14" fill="#000" opacity=".15"/>
+            <rect x="105" y="95" width="90" height="70" rx="20" fill="#caa06e"/>
+            <circle cx="150" cy="75" r="42" fill="#e9c79e"/>
+            <circle cx="150" cy="75" r="42" fill="url(#softshade)"/>
+            <defs><radialGradient id="softshade" cx="35%" cy="30%" r="75%"><stop offset="55%" stop-color="#fff" stop-opacity="0"/><stop offset="100%" stop-color="#5b4326" stop-opacity=".25"/></radialGradient></defs>
+          </svg>
+        </div>
+        <div class="compare-before" id="compare-before-flash" style="width:50%;">
+          <div class="compare-before-inner">
+            <svg viewBox="0 0 300 170" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="background:#0d0f13;">
+              <ellipse cx="185" cy="150" rx="55" ry="12" fill="#000" opacity=".55"/>
+              <rect x="105" y="95" width="90" height="70" rx="20" fill="#caa06e"/>
+              <rect x="150" y="95" width="45" height="70" rx="0" fill="#5b4326" opacity=".6"/>
+              <circle cx="150" cy="75" r="42" fill="#e9c79e"/>
+              <path d="M150,33 A42,42 0 0,1 150,117 A42,42 0 0,1 150,33 Z" fill="#4a3319" opacity=".55"/>
+            </svg>
+          </div>
+        </div>
+        <input type="range" class="compare-range" min="0" max="100" value="50" data-target="compare-before-flash">
+        <div class="compare-labels"><span>Directo</span><span>Rebotado</span></div>
+      </div>
+    </div>
+
+    <div class="q-card">
       <span class="q-type-tag tag-tips">Errores comunes</span>
       <ul class="tip-list">
         <li>Disparar flash directo de frente en primeros planos — sombra dura detrás del sujeto y posible efecto de ojos rojos.</li>
@@ -511,6 +732,23 @@
     </div>
 
     <div class="q-card">
+      <span class="q-type-tag tag-ejer">Interactivo</span>
+      <div class="card-title">🎬 AF-S vs. AF-C en movimiento</div>
+      <div class="theory"><p>Dos escenas animadas: en AF-S el punto de foco queda fijo y el sujeto se desenfoca al alejarse; en AF-C el foco lo sigue.</p></div>
+      <div class="focus-demo" id="focus-demo">
+        <div>
+          <div class="focus-scene"><div class="focus-box"></div><div class="focus-dot afs-dot"></div></div>
+          <p class="focus-caption">AF-S: foco fijo → se desenfoca</p>
+        </div>
+        <div>
+          <div class="focus-scene"><div class="focus-box afc-box"></div><div class="focus-dot afc-dot"></div></div>
+          <p class="focus-caption">AF-C: sigue al sujeto → nítido</p>
+        </div>
+      </div>
+      <div class="focus-toggle-row"><button class="focus-toggle" id="focus-toggle-btn">▶ Reproducir animación</button></div>
+    </div>
+
+    <div class="q-card">
       <span class="q-type-tag tag-tips">Errores comunes</span>
       <ul class="tip-list">
         <li>Usar AF-S para sujetos en movimiento — el foco queda fijo y el sujeto avanza.</li>
@@ -557,6 +795,39 @@
         <p>Que una foto sea "legible" en un evento significa que se entiende el momento de un vistazo: quién es el protagonista, qué está pasando y por qué importa. Esto es más importante que la creatividad extrema o el uso estricto de reglas clásicas.</p>
         <p>Reglas clásicas (regla de tercios, líneas guía, encuadre) siguen siendo útiles como punto de partida, aplicadas con criterio y no como dogma.</p>
         <p>Reglas prácticas específicas de eventos: dejar "aire" alrededor del sujeto para posible uso de texto/edición, evitar cortar articulaciones (codos, rodillas, tobillos) en el encuadre, cuidar el fondo (postes, carteles de salida de emergencia, gente cruzando de fondo), y ajustar la altura de la cámara según la escena (agacharse para fotografiar niños, elevar la cámara para grupos grandes).</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-ejer">Interactivo</span>
+      <div class="card-title">↔ Comparador: encuadre desordenado vs. recompuesto</div>
+      <div class="theory"><p>Arrastrá para comparar, y activá la grilla para ver la regla de tercios aplicada del lado derecho.</p></div>
+      <div class="grid-toggle-row"><input type="checkbox" id="toggle-thirds"><label for="toggle-thirds">Mostrar grilla de tercios</label></div>
+      <div class="compare-wrap" id="compare-comp">
+        <div class="compare-after">
+          <svg viewBox="0 0 300 170" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="background:#1c2420;">
+            <rect x="0" y="120" width="300" height="50" fill="#2b352f"/>
+            <circle cx="200" cy="90" r="26" fill="#e9c79e"/>
+            <rect x="182" y="112" width="36" height="55" rx="10" fill="#caa06e"/>
+            <circle cx="240" cy="95" r="22" fill="#f0d3ae"/>
+            <rect x="225" y="114" width="30" height="50" rx="9" fill="#e2b892"/>
+          </svg>
+          <div class="thirds-grid" id="thirds-grid-comp"></div>
+        </div>
+        <div class="compare-before" id="compare-before-comp" style="width:50%;">
+          <div class="compare-before-inner">
+            <svg viewBox="0 0 300 170" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="background:#1c2420;">
+              <rect x="0" y="120" width="300" height="50" fill="#2b352f"/>
+              <rect x="10" y="20" width="14" height="140" fill="#5a4a3a"/>
+              <rect x="4" y="14" width="26" height="14" fill="#b23b3b"/>
+              <circle cx="150" cy="-10" r="26" fill="#e9c79e"/>
+              <rect x="132" y="12" width="36" height="55" rx="10" fill="#caa06e"/>
+              <circle cx="30" cy="95" r="18" fill="#f0d3ae" opacity=".7"/>
+            </svg>
+          </div>
+        </div>
+        <input type="range" class="compare-range" min="0" max="100" value="50" data-target="compare-before-comp">
+        <div class="compare-labels"><span>Antes</span><span>Después</span></div>
       </div>
     </div>
 
@@ -630,6 +901,49 @@
           <tr><td>Fotos creativas</td><td>Contraluces, minimalismo, ángulos distintos, uso del entorno para diferenciar el estilo</td></tr>
         </table>
         <p><strong>Parejas:</strong> buscar contacto real (frentes juntas, manos, susurro) en vez de poses de catálogo. <strong>Quinceañera y corte / familias:</strong> la misma lógica de "sin mirar a cámara + movimiento continuo" funciona igual — reemplazar "la pareja" por el grupo protagonista y ajustar la indicación a su dinámica (caminar todas juntas, girar, reírse de algo puntual).</p>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-ejer">Interactivo</span>
+      <div class="card-title">🖼 Galería de las 4 categorías</div>
+      <div class="theory"><p>Elegí una categoría para ver el diagrama de posición y su intención.</p></div>
+      <div class="pose-btns">
+        <button class="pose-btn active" data-pose="conexion">Conexión emocional</button>
+        <button class="pose-btn" data-pose="movimiento">Movimiento</button>
+        <button class="pose-btn" data-pose="detalles">Detalles íntimos</button>
+        <button class="pose-btn" data-pose="creativas">Creativas</button>
+      </div>
+      <div class="pose-stage">
+        <div class="pose-scene active" data-pose="conexion">
+          <svg viewBox="0 0 200 120" width="160" height="96">
+            <circle cx="85" cy="35" r="12" fill="#e9c79e"/><circle cx="115" cy="35" r="12" fill="#caa06e"/>
+            <path d="M85,47 Q100,60 115,47 L112,90 Q100,100 88,90 Z" fill="#8090ff" opacity=".8"/>
+          </svg>
+          <p class="pose-caption">Ritmo lento, silencio, dar tiempo y espacio. El fotógrafo está listo para disparar justo cuando la conexión se hace evidente.</p>
+        </div>
+        <div class="pose-scene" data-pose="movimiento">
+          <svg viewBox="0 0 200 120" width="160" height="96">
+            <circle cx="70" cy="30" r="10" fill="#e9c79e"/><path d="M70,40 L60,75 M70,40 L85,70 M70,40 L55,55 M70,40 L90,50" stroke="#6ac8a0" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M100,20 Q130,30 120,10 M100,20 Q135,15 125,35" stroke="#6ac8a0" stroke-width="2" fill="none" opacity=".6"/>
+          </svg>
+          <p class="pose-caption">Caminar, correr, girar, jugar — rompe la rigidez y genera fluidez e ideas espontáneas.</p>
+        </div>
+        <div class="pose-scene" data-pose="detalles">
+          <svg viewBox="0 0 200 120" width="160" height="96">
+            <path d="M80,70 Q75,40 95,35 Q100,25 108,35 Q115,25 120,38 Q128,40 122,55 Q125,70 105,75 Z" fill="#e9c79e"/>
+            <ellipse cx="103" cy="45" rx="5" ry="7" fill="none" stroke="#e8a838" stroke-width="3"/>
+          </svg>
+          <p class="pose-caption">Manos, miradas, objetos simbólicos (anillo, accesorio) — pequeños gestos que cuentan una gran historia.</p>
+        </div>
+        <div class="pose-scene" data-pose="creativas">
+          <svg viewBox="0 0 200 120" width="160" height="96">
+            <circle cx="100" cy="55" r="34" fill="none" stroke="#e8a838" stroke-width="2" opacity=".5"/>
+            <path d="M100,55 L100,10 M100,55 L138,32 M100,55 L138,78 M100,55 L100,100 M100,55 L62,78 M100,55 L62,32" stroke="#e8a838" stroke-width="1.5" opacity=".5"/>
+            <circle cx="100" cy="55" r="16" fill="#14141a"/>
+          </svg>
+          <p class="pose-caption">Contraluces, minimalismo, ángulos distintos — usar el entorno para diferenciar el estilo.</p>
+        </div>
       </div>
     </div>
 
@@ -896,20 +1210,47 @@
     <div class="hero" style="margin-top:24px;">
       <div class="hero-emoji">🎓</div>
       <h2 class="hero-title" style="font-size:20px;">¡Plan de estudios completado!</h2>
-      <p class="hero-sub">Ahora es momento de la evaluación integral: 8 ejes, casos prácticos y diagnóstico personal.</p>
+      <p class="hero-sub">Repasá con las flashcards y después dale a la evaluación integral: 8 ejes, casos prácticos y diagnóstico personal.</p>
       <div class="cta-row"><a class="btn btn-primary" href="cuestionario-fotografia.html">Ir a la Evaluación Final →</a></div>
     </div>
 
     <div class="mark-done-row"><button class="mark-done" data-mod="12">Marcar módulo 12 como completado</button></div>
-    <div class="nav-row"><button class="btn btn-ghost btn-nav" onclick="navigate(-1)">← Anterior</button><button class="btn btn-primary btn-nav" onclick="goTo(0)">Volver al Inicio</button></div>
+    <div class="nav-row"><button class="btn btn-ghost btn-nav" onclick="navigate(-1)">← Anterior</button><button class="btn btn-primary btn-nav" onclick="goTo(13)">Ir a Repaso →</button></div>
+  </div>
+
+  <!-- REPASO -->
+  <div class="module-section" id="mod-13" data-title="Repaso Rápido">
+    <div class="module-header"><span class="module-badge">Repaso</span><h2 class="module-title">Flashcards de los 12 módulos</h2></div>
+    <p class="module-goal">Repasá los conceptos clave antes de rendir la evaluación final. Tocá la tarjeta para dar vuelta y ver la respuesta.</p>
+
+    <div class="q-card">
+      <div class="flashcard-wrap">
+        <div class="flash-hint">Tocá para dar vuelta</div>
+        <div class="flashcard" id="flashcard">
+          <div class="flashcard-inner" id="flashcard-inner">
+            <div class="flashcard-front" id="flashcard-front">Pregunta</div>
+            <div class="flashcard-back" id="flashcard-back">Respuesta</div>
+          </div>
+        </div>
+        <div class="flash-controls">
+          <button id="flash-prev">← Anterior</button>
+          <span id="flash-counter">1 / 24</span>
+          <button id="flash-shuffle">🔀 Mezclar</button>
+          <button id="flash-next">Siguiente →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-row"><button class="btn btn-ghost btn-nav" onclick="goTo(12)">← Volver al módulo 12</button><button class="btn btn-primary btn-nav" onclick="goTo(0)">Volver al Inicio</button></div>
   </div>
 
 </div>
 
 <script>
   const TOTAL_MODULES = 12;
+  const MAX_TAB = 13;
   let current = 0;
-  const modNames = ["Inicio","Mentalidad","Cámara","Ópticas","La Luz","Flash","Foco","Composición","Dirección","Narrativa","Clientes","Edición","Kit Final"];
+  const modNames = ["Inicio","Mentalidad","Cámara","Ópticas","La Luz","Flash","Foco","Composición","Dirección","Narrativa","Clientes","Edición","Kit Final","Repaso"];
 
   const nav = document.getElementById('module-nav');
   modNames.forEach((m, i) => {
@@ -951,7 +1292,7 @@
 
   function navigate(dir) {
     const next = current + dir;
-    if (next < 0 || next > TOTAL_MODULES) return;
+    if (next < 0 || next > MAX_TAB) return;
     goTo(next);
   }
 
@@ -1010,6 +1351,215 @@
   });
 
   updateProgress();
+
+  /* ===== SIMULADOR DE EXPOSICIÓN (Módulo 2) ===== */
+  (function initSimulator(){
+    const isoEl = document.getElementById('ctrl-iso');
+    const shutterEl = document.getElementById('ctrl-shutter');
+    const apEl = document.getElementById('ctrl-aperture');
+    if (!isoEl) return;
+    const shutterLabels = ["1\"","1/2","1/8","1/15","1/30","1/60","1/125","1/160","1/250","1/500","1/2000"];
+    const shutterSecs =   [1, 0.5, 0.125, 1/15, 1/30, 1/60, 1/125, 1/160, 1/250, 1/500, 1/2000];
+    const apertures = [1.4, 2, 2.8, 4, 5.6, 8, 11, 16];
+    function render(){
+      const iso = parseInt(isoEl.value, 10);
+      const sIdx = parseInt(shutterEl.value, 10);
+      const aIdx = parseInt(apEl.value, 10);
+      const shutterSec = shutterSecs[sIdx];
+      const aperture = apertures[aIdx];
+      document.getElementById('lbl-iso').textContent = iso;
+      document.getElementById('lbl-shutter').textContent = shutterLabels[sIdx];
+      document.getElementById('lbl-aperture').textContent = 'f/' + aperture;
+
+      const lightScore = (iso/400) * (shutterSec/(1/160)) * ((4*4)/(aperture*aperture));
+      const stops = Math.log2(lightScore);
+      const brightness = Math.min(2, Math.max(0.35, 1 + stops*0.18));
+      const blurPx = Math.max(0, (16-aperture)/(16-1.4) * 12);
+      document.getElementById('sim-bg').style.filter = `brightness(${brightness}) blur(${blurPx}px)`;
+      let evLabel = 'correcta';
+      if (stops > 0.6) evLabel = 'sobreexpuesta';
+      else if (stops < -0.6) evLabel = 'subexpuesta';
+      document.getElementById('badge-ev').textContent = `EV: ${stops>=0?'+':''}${stops.toFixed(1)} (${evLabel})`;
+
+      const noiseOpacity = Math.min(0.6, Math.max(0, (iso-100)/6300) * 0.65);
+      document.getElementById('sim-grain').style.opacity = noiseOpacity;
+      const noiseLabel = iso < 800 ? 'bajo' : (iso < 3200 ? 'medio' : 'alto');
+      document.getElementById('badge-noise').textContent = `Ruido: ${noiseLabel}`;
+
+      const trail = Math.min(46, shutterSec*260);
+      document.getElementById('sim-dot').style.boxShadow = trail > 2 ? `-${trail}px 0 10px rgba(255,255,255,.55)` : 'none';
+      const motionLabel = shutterSec <= 1/125 ? 'Congelado' : (shutterSec <= 1/30 ? 'Levemente movido' : 'Movido');
+      document.getElementById('badge-motion').textContent = motionLabel;
+
+      const dofLabel = aperture <= 2.8 ? 'poca (fondo desenfocado)' : (aperture <= 8 ? 'media' : 'mucha (todo nítido)');
+      document.getElementById('badge-dof').textContent = `Profundidad: ${dofLabel}`;
+    }
+    [isoEl, shutterEl, apEl].forEach(el => el.addEventListener('input', render));
+    render();
+  })();
+
+  /* ===== COMPARADOR ANTES/DESPUÉS ===== */
+  (function initCompare(){
+    function setWidths(){
+      document.querySelectorAll('.compare-wrap').forEach(w => w.style.setProperty('--wrap-w', w.offsetWidth+'px'));
+    }
+    setWidths();
+    window.addEventListener('resize', setWidths);
+    document.querySelectorAll('.compare-range').forEach(range => {
+      range.addEventListener('input', () => {
+        const target = document.getElementById(range.dataset.target);
+        if (target) target.style.width = range.value + '%';
+      });
+    });
+    const gridToggle = document.getElementById('toggle-thirds');
+    if (gridToggle) {
+      gridToggle.addEventListener('change', () => {
+        document.getElementById('thirds-grid-comp').classList.toggle('on', gridToggle.checked);
+      });
+    }
+  })();
+
+  /* ===== JUEGO DE EMPAREJAR ===== */
+  (function initMatchGames(){
+    document.querySelectorAll('.match-game').forEach(game => {
+      const pairs = JSON.parse(game.dataset.pairs);
+      let selectedLeft = null;
+      let correctCount = 0;
+      const statusEl = document.getElementById(game.id + '-status');
+      function updateStatus(){ statusEl.textContent = `${correctCount} / ${Object.keys(pairs).length} correctas`; }
+      game.querySelectorAll('.match-item[data-side="left"]').forEach(item => {
+        item.addEventListener('click', () => {
+          if (item.classList.contains('correct')) return;
+          game.querySelectorAll('.match-item[data-side="left"]').forEach(i => i.classList.remove('selected'));
+          item.classList.add('selected');
+          selectedLeft = item;
+        });
+      });
+      game.querySelectorAll('.match-item[data-side="right"]').forEach(item => {
+        item.addEventListener('click', () => {
+          if (!selectedLeft || item.classList.contains('correct')) return;
+          const expected = pairs[selectedLeft.dataset.key];
+          if (item.dataset.key === expected) {
+            selectedLeft.classList.remove('selected'); selectedLeft.classList.add('correct');
+            item.classList.add('correct');
+            correctCount++; updateStatus();
+            selectedLeft = null;
+          } else {
+            item.classList.add('wrong');
+            setTimeout(() => item.classList.remove('wrong'), 500);
+          }
+        });
+      });
+      const resetBtn = document.querySelector(`.match-reset[data-game="${game.id}"]`);
+      if (resetBtn) resetBtn.addEventListener('click', () => {
+        correctCount = 0; selectedLeft = null; updateStatus();
+        game.querySelectorAll('.match-item').forEach(i => i.classList.remove('selected','correct','wrong'));
+      });
+      updateStatus();
+    });
+  })();
+
+  /* ===== DIAGRAMA DE LUZ ===== */
+  (function initLightDiagram(){
+    const bulb = document.getElementById('light-bulb');
+    if (!bulb) return;
+    const face = document.getElementById('light-face');
+    const shadow = document.getElementById('light-shadow');
+    const desc = document.getElementById('light-desc');
+    const configs = {
+      frontal:   { top:'82%', left:'50%', behind:false, rim:false, shadowClass:'shadow-frontal',
+        text: 'Frontal: ilumina de frente, reduce sombras pero puede aplanar la imagen.' },
+      cenital:   { top:'0%',  left:'50%', behind:false, rim:false, shadowClass:'shadow-cenital',
+        text: 'Cenital (desde arriba): puede generar sombras duras en ojos y rostro. Común en exteriores al mediodía.' },
+      lateral:   { top:'42%', left:'88%', behind:false, rim:false, shadowClass:'shadow-lateral',
+        text: 'Lateral: da volumen. Ayuda muchísimo para retratos, profundidad y dramatismo.' },
+      contraluz: { top:'42%', left:'50%', behind:true,  rim:true,  shadowClass:'shadow-contraluz',
+        text: 'Contraluz: la luz viene desde atrás del sujeto. Genera siluetas, atmósferas cinematográficas y brillo alrededor del cabello.' }
+    };
+    function apply(dir){
+      const c = configs[dir];
+      bulb.style.top = c.top; bulb.style.left = c.left;
+      bulb.classList.toggle('behind', c.behind);
+      face.classList.toggle('rimglow', c.rim);
+      shadow.className = 'light-shadow ' + c.shadowClass;
+      desc.textContent = c.text;
+      document.querySelectorAll('.light-btn').forEach(b => b.classList.toggle('active', b.dataset.dir === dir));
+    }
+    document.querySelectorAll('.light-btn').forEach(btn => btn.addEventListener('click', () => apply(btn.dataset.dir)));
+    apply('frontal');
+  })();
+
+  /* ===== AF-S vs AF-C ===== */
+  (function initFocusDemo(){
+    const demo = document.getElementById('focus-demo');
+    if (!demo) return;
+    const btn = document.getElementById('focus-toggle-btn');
+    btn.addEventListener('click', () => {
+      const playing = demo.classList.toggle('playing');
+      btn.textContent = playing ? '⏸ Pausar animación' : '▶ Reproducir animación';
+    });
+  })();
+
+  /* ===== GALERÍA DE POSES ===== */
+  (function initPoseGallery(){
+    const btns = document.querySelectorAll('.pose-btn');
+    if (!btns.length) return;
+    btns.forEach(btn => btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.pose-scene').forEach(s => s.classList.toggle('active', s.dataset.pose === btn.dataset.pose));
+    }));
+  })();
+
+  /* ===== FLASHCARDS DE REPASO ===== */
+  (function initFlashcards(){
+    const cardEl = document.getElementById('flashcard');
+    if (!cardEl) return;
+    let cards = [
+      {q:"¿Qué distingue a un fotógrafo profesional de uno amateur en sociales?", a:"La anticipación: detectar micro-momentos antes de que sucedan."},
+      {q:"¿Qué significa 'ser invisible' en fotografía social?", a:"Estar presente sin invadir, para que la gente se olvide de la cámara."},
+      {q:"¿Qué controla el ISO?", a:"La sensibilidad del sensor a la luz."},
+      {q:"¿Desde qué velocidad se considera una imagen 'congelada'?", a:"Desde 1/125 en adelante, aproximadamente."},
+      {q:"¿Qué lente conviene para un salón completo o grupos grandes?", a:"Un gran angular, como 16-35mm."},
+      {q:"¿Qué lente da máximo desenfoque de fondo en un retrato?", a:"Un fijo luminoso, como 85mm f/1.8."},
+      {q:"¿Qué tipo de luz da sombras suaves y piel agradable?", a:"Luz suave: ventana, sombra o día nublado."},
+      {q:"¿Qué genera la luz de contraluz?", a:"Siluetas, atmósfera cinematográfica y brillo alrededor del cabello."},
+      {q:"¿Para qué sirve principalmente el flash rebotado?", a:"Para suavizar la luz, evitando sombras duras."},
+      {q:"¿Qué hacer si el techo es muy alto para rebotar el flash?", a:"Usar difusor, bounce card, subir ISO o buscar una pared cercana."},
+      {q:"¿Qué modo de enfoque usás para una entrada en movimiento?", a:"AF-C (enfoque continuo con seguimiento)."},
+      {q:"¿Cuál es una causa común de fotos desenfocadas en grupos?", a:"Profundidad de campo insuficiente por apertura muy abierta."},
+      {q:"¿Qué es más importante en composición de eventos?", a:"Que se entienda el momento, más que la creatividad extrema."},
+      {q:"¿Qué cuidar al encuadrar personas?", a:"No cortar articulaciones (codos, rodillas, tobillos) ni el fondo distractor."},
+      {q:"¿Cuál es una de las 4 reglas de oro para dirigir sin forzar?", a:"'Prohibido mirar a cámara' — la conexión sale cuando se miran entre sí."},
+      {q:"¿Por qué conviene dar indicaciones en movimiento y no poses congeladas?", a:"Porque la naturalidad aparece en el movimiento repetido, no en la pose fija."},
+      {q:"¿Qué es más grave perder en un evento?", a:"Un momento clave — es irrepetible, a diferencia del ruido o una leve subexposición."},
+      {q:"Nombrá 3 momentos imperdibles de una boda o 15 años.", a:"Entrada, primer baile/vals y brindis (también: torta, detalles, reacciones)."},
+      {q:"¿Qué hacer antes de una sesión para generar confianza?", a:"Una entrevista inicial: conocer su historia, expectativas y estilo preferido."},
+      {q:"¿Cómo tratar a un cliente tímido frente a cámara?", a:"Con indicaciones simples y haciéndolo mover, para que deje de pensar en la cámara."},
+      {q:"¿Qué priorizar al seleccionar fotos para entregar?", a:"Relevancia y momento emocional por sobre la perfección técnica, salvo que sea inutilizable."},
+      {q:"¿Qué es la regla de backup 3-2-1?", a:"Al menos 2 copias en dispositivos distintos + 1 en la nube, antes de formatear tarjetas."},
+      {q:"¿Por qué usar varias tarjetas de memoria chicas en vez de una grande?", a:"Si una falla, no se pierde todo el evento."},
+      {q:"¿Qué revisar la noche anterior a un evento?", a:"Cargar baterías, formatear tarjetas y confirmar horarios con el cliente."}
+    ];
+    let idx = 0;
+    const front = document.getElementById('flashcard-front');
+    const back = document.getElementById('flashcard-back');
+    const counter = document.getElementById('flash-counter');
+    function render(){
+      cardEl.classList.remove('flipped');
+      front.textContent = cards[idx].q;
+      back.textContent = cards[idx].a;
+      counter.textContent = `${idx+1} / ${cards.length}`;
+    }
+    cardEl.addEventListener('click', () => cardEl.classList.toggle('flipped'));
+    document.getElementById('flash-next').addEventListener('click', () => { idx = (idx+1) % cards.length; render(); });
+    document.getElementById('flash-prev').addEventListener('click', () => { idx = (idx-1+cards.length) % cards.length; render(); });
+    document.getElementById('flash-shuffle').addEventListener('click', () => {
+      for (let i = cards.length-1; i>0; i--){ const j = Math.floor(Math.random()*(i+1)); [cards[i],cards[j]]=[cards[j],cards[i]]; }
+      idx = 0; render();
+    });
+    render();
+  })();
 </script>
 </body>
 </html>
