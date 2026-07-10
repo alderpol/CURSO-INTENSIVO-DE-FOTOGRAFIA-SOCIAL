@@ -397,31 +397,11 @@
     <div class="q-card">
       <span class="q-type-tag tag-ejer">Interactivo</span>
       <div class="card-title">🎛 Simulador del triángulo de exposición</div>
-      <div class="theory"><p>Movés los tres controles y mirá en tiempo real cómo cambia el resultado: brillo, ruido y profundidad de campo. Es la misma lógica que usás con la cámara en la mano.</p></div>
-      <div class="sim-grid">
-        <div class="sim-preview">
-          <div class="sim-scene" id="sim-scene">
-            <div class="sim-bg" id="sim-bg"></div>
-            <div class="sim-subject">🙂</div>
-            <div class="sim-dot" id="sim-dot"></div>
-            <div class="sim-grain" id="sim-grain"></div>
-          </div>
-          <div class="sim-readout">
-            <span class="sim-badge" id="badge-ev">EV: 0.0 (correcta)</span>
-            <span class="sim-badge" id="badge-noise">Ruido: bajo</span>
-            <span class="sim-badge" id="badge-motion">Congelado</span>
-            <span class="sim-badge" id="badge-dof">Profundidad: media</span>
-          </div>
-        </div>
-        <div class="sim-controls">
-          <label>ISO <span id="lbl-iso">400</span></label>
-          <input type="range" id="ctrl-iso" min="100" max="6400" step="100" value="400">
-          <label>Velocidad <span id="lbl-shutter">1/160</span></label>
-          <input type="range" id="ctrl-shutter" min="0" max="10" step="1" value="6">
-          <label>Diafragma <span id="lbl-aperture">f/4</span></label>
-          <input type="range" id="ctrl-aperture" min="0" max="7" step="1" value="3">
-        </div>
+      <div class="theory"><p>Simulador real (foto + ruido + movimiento) de Dima Media, pensado para enseñar exactamente esto. Movés ISO, velocidad y diafragma y ves el resultado en vivo sobre la imagen.</p></div>
+      <div style="position:relative;width:100%;aspect-ratio:16/10;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--surface);">
+        <iframe src="https://dima.fi/exposure/" title="Exposure Triangle Simulator" style="width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe>
       </div>
+      <p class="source-note">Simulador de <a href="https://dima.fi/exposure/" target="_blank" rel="noopener">dima.fi/exposure</a> (de uso libre para compartir e incrustar). Si no carga dentro de la página, abrilo directo en <a href="https://dima.fi/exposure/" target="_blank" rel="noopener">esta pestaña</a>.</p>
     </div>
 
     <div class="q-card">
@@ -486,19 +466,22 @@
 
     <div class="q-card">
       <span class="q-type-tag tag-ejer">Interactivo</span>
-      <div class="card-title">📐 Ángulo de visión según la focal</div>
-      <div class="theory"><p>El mismo punto de cámara, tres lentes distintos: notá cómo cambia cuánto entra en cuadro.</p></div>
-      <svg viewBox="0 0 400 200" style="width:100%;height:auto;">
-        <polygon points="30,180 370,20 370,180" fill="rgba(100,120,255,.12)" stroke="#8090ff" stroke-width="1.5"/>
-        <polygon points="30,180 340,70 340,180" fill="rgba(232,168,56,.15)" stroke="#e8a838" stroke-width="1.5"/>
-        <polygon points="30,180 300,140 300,180" fill="rgba(100,200,160,.2)" stroke="#6ac8a0" stroke-width="1.5"/>
-        <circle cx="30" cy="180" r="5" fill="#f0ede8"/>
-        <text x="345" y="15" fill="#8090ff" font-size="11" font-family="Outfit">16-35mm</text>
-        <text x="315" y="65" fill="#e8a838" font-size="11" font-family="Outfit">50mm</text>
-        <text x="230" y="135" fill="#6ac8a0" font-size="11" font-family="Outfit">200mm</text>
-        <text x="6" y="195" fill="#7a7882" font-size="10" font-family="Outfit">cámara</text>
-      </svg>
-      <p class="source-note">Cuanto más angular, más ángulo de visión entra en cuadro (más contexto); cuanto más tele, menos ángulo pero más compresión y desenfoque de fondo.</p>
+      <div class="card-title">📐 Simulador de campo de visión</div>
+      <div class="theory"><p>Comparador real de PhotoTools: elegí distancia focal y sensor para dos lentes y mirá exactamente cuánto entra en cuadro con cada uno, superpuesto sobre una escena real.</p></div>
+      <div style="position:relative;width:100%;aspect-ratio:16/11;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--surface);">
+        <iframe src="https://www.phototools.io/es/fov-simulator?a=24&sa=ff&b=85&sb=ff&img=2" title="Simulador de campo de visión" style="width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe>
+      </div>
+      <p class="source-note">Empieza comparando 24mm vs. 85mm en formato completo (una combinación típica de evento). Podés cambiar los valores dentro del simulador o abrirlo directo en <a href="https://www.phototools.io/es/fov-simulator" target="_blank" rel="noopener">phototools.io</a> si no carga en el iframe.</p>
+    </div>
+
+    <div class="q-card">
+      <span class="q-type-tag tag-ejer">Recurso externo</span>
+      <div class="card-title">🔎 Simulador de profundidad de campo</div>
+      <div class="theory"><p>DOF Simulator calcula y simula visualmente cuánto desenfoque de fondo (bokeh) da cada combinación de lente, apertura y distancia — ideal para entender por qué un 85mm f/1.8 desenfoca tanto más que un 24-70mm a f/8.</p></div>
+      <div class="cta-row" style="justify-content:flex-start;margin-top:0;">
+        <a class="btn btn-primary" href="https://dofsimulator.net/en/" target="_blank" rel="noopener">Abrir DOF Simulator ↗</a>
+      </div>
+      <p class="source-note">Se abre en una pestaña nueva (el sitio no permite incrustarse, solo enlazarse).</p>
     </div>
 
     <div class="q-card">
@@ -651,32 +634,12 @@
 
     <div class="q-card">
       <span class="q-type-tag tag-ejer">Interactivo</span>
-      <div class="card-title">↔ Comparador: flash directo vs. rebotado</div>
-      <div class="theory"><p>Arrastrá el control para comparar la dureza de la sombra en cada técnica.</p></div>
-      <div class="compare-wrap" id="compare-flash">
-        <div class="compare-after">
-          <svg viewBox="0 0 300 170" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="background:#20242b;">
-            <ellipse cx="150" cy="150" rx="70" ry="14" fill="#000" opacity=".15"/>
-            <rect x="105" y="95" width="90" height="70" rx="20" fill="#caa06e"/>
-            <circle cx="150" cy="75" r="42" fill="#e9c79e"/>
-            <circle cx="150" cy="75" r="42" fill="url(#softshade)"/>
-            <defs><radialGradient id="softshade" cx="35%" cy="30%" r="75%"><stop offset="55%" stop-color="#fff" stop-opacity="0"/><stop offset="100%" stop-color="#5b4326" stop-opacity=".25"/></radialGradient></defs>
-          </svg>
-        </div>
-        <div class="compare-before" id="compare-before-flash" style="width:50%;">
-          <div class="compare-before-inner">
-            <svg viewBox="0 0 300 170" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="background:#0d0f13;">
-              <ellipse cx="185" cy="150" rx="55" ry="12" fill="#000" opacity=".55"/>
-              <rect x="105" y="95" width="90" height="70" rx="20" fill="#caa06e"/>
-              <rect x="150" y="95" width="45" height="70" rx="0" fill="#5b4326" opacity=".6"/>
-              <circle cx="150" cy="75" r="42" fill="#e9c79e"/>
-              <path d="M150,33 A42,42 0 0,1 150,117 A42,42 0 0,1 150,33 Z" fill="#4a3319" opacity=".55"/>
-            </svg>
-          </div>
-        </div>
-        <input type="range" class="compare-range" min="0" max="100" value="50" data-target="compare-before-flash">
-        <div class="compare-labels"><span>Directo</span><span>Rebotado</span></div>
+      <div class="card-title">💡 Simulador de estudio de luz (Virtual Lighting Studio)</div>
+      <div class="theory"><p>Herramienta real de iluminación: probá una luz "bare" (strobe directo, sin modificador) y después cambiala a softbox — es el mismo principio que directo vs. rebotado: el modificador suaviza la luz y ablanda la sombra. Movés la posición y el tipo de luz sobre un rostro 3D y ves el resultado al instante.</p></div>
+      <div style="position:relative;width:100%;aspect-ratio:16/10;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--surface);">
+        <iframe src="http://www.zvork.fr/vls/?lang=es" title="Virtual Lighting Studio" style="width:100%;height:100%;border:0;" loading="lazy" allowfullscreen></iframe>
       </div>
+      <p class="source-note">Probá: elegí "strobe" desnudo bien cerca del rostro (luz dura, sombra marcada) y despues cambialo por un softbox en la misma posición (luz suave, sombra difuminada) — la misma lógica que flash directo vs. rebotado. Simulador de <a href="http://www.zvork.fr/vls/" target="_blank" rel="noopener">zvork.fr/vls</a>; si no carga en el iframe, abrilo directo en esa pestaña.</p>
     </div>
 
     <div class="q-card">
@@ -1279,6 +1242,13 @@
     }
   }
 
+  function refreshCompareWidths() {
+    document.querySelectorAll('.compare-wrap').forEach(w => {
+      const width = w.offsetWidth;
+      if (width > 0) w.style.setProperty('--wrap-w', width + 'px');
+    });
+  }
+
   function goTo(idx) {
     document.querySelectorAll('.module-section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.mod-tab').forEach(t => t.classList.remove('active'));
@@ -1288,6 +1258,7 @@
     if (tab) tab.classList.add('active');
     current = idx;
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(refreshCompareWidths, 0);
   }
 
   function navigate(dir) {
@@ -1400,11 +1371,8 @@
 
   /* ===== COMPARADOR ANTES/DESPUÉS ===== */
   (function initCompare(){
-    function setWidths(){
-      document.querySelectorAll('.compare-wrap').forEach(w => w.style.setProperty('--wrap-w', w.offsetWidth+'px'));
-    }
-    setWidths();
-    window.addEventListener('resize', setWidths);
+    refreshCompareWidths();
+    window.addEventListener('resize', refreshCompareWidths);
     document.querySelectorAll('.compare-range').forEach(range => {
       range.addEventListener('input', () => {
         const target = document.getElementById(range.dataset.target);
